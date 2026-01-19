@@ -6,16 +6,14 @@
   <title>DISC — самооценка (медицинские представители)</title>
   <style>
     :root{
-      /* Подгони под ваш бренд-гайд при необходимости */
+      /* Если у тебя есть точные Sandoz HEX из брендгайда — подставь здесь */
       --bg:#f6f8fb;
       --card:#ffffff;
       --text:#0b1220;
       --muted:#5b667a;
       --line:#e3e8f2;
-      --primary:#0057B8;   /* если у тебя есть точные HEX Sandoz — заменим */
+      --primary:#0057B8;
       --primary2:#00A3E0;
-      --good:#12b76a;
-      --bad:#f04438;
       --shadow: 0 10px 25px rgba(11,18,32,.08);
       --radius: 16px;
       --radius2: 22px;
@@ -42,7 +40,7 @@
     .subtitle{margin:2px 0 0; color:var(--muted); font-size:13px; line-height:1.3;}
 
     .actions{display:flex; gap:10px; flex-wrap:wrap;}
-    button{border:0; border-radius:12px; padding:10px 12px; font-weight:700; cursor:pointer; background: var(--primary); color:white; box-shadow: 0 8px 18px rgba(0,87,184,.20);}
+    button{border:0; border-radius:12px; padding:10px 12px; font-weight:800; cursor:pointer; background: var(--primary); color:white; box-shadow: 0 8px 18px rgba(0,87,184,.20);}
     button.secondary{background:#fff; color:var(--text); border:1px solid var(--line); box-shadow:none;}
     button:disabled{opacity:.55; cursor:not-allowed;}
 
@@ -54,7 +52,7 @@
     .hint{color:var(--muted); font-size:13px; line-height:1.45;}
 
     .pillrow{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;}
-    .pill{font-size:12px; padding:6px 10px; border-radius:999px; background:#f1f5ff; border:1px solid #dbe6ff; color:#1b2d6b; font-weight:700;}
+    .pill{font-size:12px; padding:6px 10px; border-radius:999px; background:#f1f5ff; border:1px solid #dbe6ff; color:#1b2d6b; font-weight:800;}
 
     .testHeader{display:flex; align-items:flex-start; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:10px;}
     .progress{display:flex; align-items:center; gap:10px; color:var(--muted); font-size:13px;}
@@ -105,12 +103,13 @@
         <div class="logo" aria-hidden="true"></div>
         <div>
           <h1>DISC — самооценка (медицинские представители)</h1>
-          <div class="subtitle">Формат: 24 блока • MOST/LEAST выбираются как «Вариант 1–4» • расчёт выполняется на странице (без отправки данных)</div>
+          <div class="subtitle">24 блока • выбор MOST/LEAST как «Вариант 1–4» • результаты считаются локально (ничего никуда не отправляется)</div>
         </div>
       </div>
       <div class="actions">
         <button class="secondary" id="btnReset" type="button">Сбросить</button>
         <button id="btnCalc" type="button">Показать результат</button>
+        <button class="secondary" id="btnDownload" type="button" disabled>Скачать результат (PDF)</button>
       </div>
     </div>
 
@@ -133,7 +132,6 @@
         </div>
 
         <div id="blocks"></div>
-
         <div class="foot">Подсказка: если сомневаешься — выбирай вариант, который чаще проявляется <b>на работе</b> или <b>под давлением</b>.</div>
       </div>
 
@@ -159,19 +157,19 @@
           <ul class="list">
             <li><b>Лидирующий стиль</b> — максимальный NET.</li>
             <li><b>Вторичный стиль</b> — второй по величине NET.</li>
-            <li>Если разница между 1 и 2 стилем ≤ 2 — вероятен <b>смешанный профиль</b> (норма для медпреда).</li>
+            <li>Если разница между 1 и 2 стилем ≤ 2 — вероятен <b>смешанный профиль</b> (это нормально для медпреда).</li>
           </ul>
         </details>
 
-        <details>
-          <summary>Рекомендации для визита (из справочника)</summary>
+        <details open>
+          <summary>Рекомендации для визита (по ведущему стилю)</summary>
           <div class="hint" id="visitTips" style="margin-top:8px;"></div>
         </details>
 
         <details>
           <summary>Важно</summary>
           <ul class="list">
-            <li>Страница работает офлайн/локально: результаты никуда не отправляются.</li>
+            <li>Страница работает локально: результаты никуда не отправляются.</li>
             <li>Это базовый самопрофиль для развития коммуникации и адаптации стиля.</li>
           </ul>
         </details>
@@ -181,9 +179,13 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script>  const INSTRUCTIONS = ["DISC самооценочный тест (базовый) для медицинских представителей", "Формат: 24 блока утверждений. В каждом блоке выберите:", "• MOST — утверждение, которое НАИБОЛЕЕ похоже на ваше типичное поведение на работе.", "• LEAST — утверждение, которое НАИМЕНЕЕ похоже.", "Рекомендации: отвечайте про «обычный рабочий день», не про идеальную версию себя.", "Ограничение: базовая самооценка для развития, не используется для решений о найме."];
-  const BLOCKS = [{"n": 1, "options": ["Сначала выясняю потребности и внимательно слушаю.", "Легко завожу разговор и создаю тёплую атмосферу.", "Опираюсь на данные и заранее продумываю детали.", "Быстро обозначаю цель визита и веду разговор к решению."], "mapping": ["S", "I", "C", "D"]}, {"n": 2, "options": ["Проверяю формулировки и соответствие материалам/регламентам.", "Стараюсь снизить напряжение и найти общую точку зрения.", "Если врач сомневается, я чётко аргументирую и предлагаю следующий шаг.", "Умею вовлечь и удерживать внимание на презентации."], "mapping": ["C", "S", "D", "I"]}, {"n": 3, "options": ["Мне важно, чтобы люди меня поддерживали и я их вдохновлял(а).", "Я замечаю неточности и люблю разбираться, «как устроено».", "Я предпочитаю стабильный темп и предсказуемые договорённости.", "Мне комфортно принимать решения при неполной информации."], "mapping": ["I", "C", "S", "D"]}, {"n": 4, "options": ["В споре я скорее разряжаю обстановку юмором/эмпатией.", "В споре я скорее ищу компромисс.", "В споре я скорее настаиваю на позиции.", "В споре я скорее уточняю факты и критерии."], "mapping": ["I", "S", "D", "C"]}, {"n": 5, "options": ["Планирую день так, чтобы было место для общения и новых контактов.", "Планирую день так, чтобы без рывков и с запасом по времени.", "Планирую день так, чтобы всё было выверено и по чек-листу.", "Планирую день так, чтобы закрыть максимум задач."], "mapping": ["I", "S", "C", "D"]}, {"n": 6, "options": ["Часто нахожу нестандартный подход через личный контакт.", "Собираю доказательства и аккуратно документирую договорённости.", "Слежу, чтобы всем было комфортно и никто не «выпал» из процесса.", "Если нужно, спокойно «продавлю» сложное согласование."], "mapping": ["I", "C", "S", "D"]}, {"n": 7, "options": ["Нравится, когда отношения долгие и надёжные.", "Нравится признание, публичность и энергия команды.", "Нравится конкуренция и измеримый результат.", "Нравится, когда качество выше скорости."], "mapping": ["S", "I", "D", "C"]}, {"n": 8, "options": ["На визите легко импровизирую и подстраиваюсь по настроению.", "На визите держу структуру и логику подачи материала.", "На визите могу быстро перейти к запросу/договорённости.", "На визите выдерживаю паузы и даю собеседнику пространство."], "mapping": ["I", "C", "D", "S"]}, {"n": 9, "options": ["Если план рушится, я оперативно перестраиваюсь и иду дальше.", "Если план рушится, я стараюсь снизить риски и выровнять процесс.", "Если план рушится, я сохраняю позитив и «заражаю» им.", "Если план рушится, я анализирую причины и корректирую систему."], "mapping": ["D", "S", "I", "C"]}, {"n": 10, "options": ["Сложные переговоры для меня — про спокойствие и уважение.", "Сложные переговоры для меня — про факты и корректность.", "Сложные переговоры для меня — про результат.", "Сложные переговоры для меня — про доверие и контакт."], "mapping": ["S", "C", "D", "I"]}, {"n": 11, "options": ["Я чаще уступаю, чтобы сохранить отношения.", "Мне проще убедить через эмоции и примеры.", "Я предпочитаю формальные правила и ясные критерии.", "Я легко говорю «нет» и ставлю границы."], "mapping": ["S", "I", "C", "D"]}, {"n": 12, "options": ["Когда есть дедлайн, уточняю требования и убираю неопределённость.", "Когда есть дедлайн, распределяю нагрузку и поддерживаю стабильность.", "Когда есть дедлайн, мотивирую людей и поднимаю дух.", "Когда есть дедлайн, ускоряю темп и требую фокуса."], "mapping": ["C", "S", "I", "D"]}, {"n": 13, "options": ["Я скорее проверяю и уточняю, чем начинаю без деталей.", "Я скорее обсуждаю и вовлекаю, чем действую в одиночку.", "Я скорее действую, чем долго обсуждаю.", "Я скорее выжидаю и наблюдаю, чем тороплюсь."], "mapping": ["C", "I", "D", "S"]}, {"n": 14, "options": ["В обучении продукта мне важны последовательность и поддержка.", "В обучении продукта мне важны доказательства и источники.", "В обучении продукта мне важна подача и история, которую можно рассказать.", "В обучении продукта мне важны практические рычаги применения."], "mapping": ["S", "C", "I", "D"]}, {"n": 15, "options": ["Если врач занят, я коротко и по сути добиваюсь окна.", "Если врач занят, я быстро устанавливаю контакт и нахожу «зацепку».", "Если врач занят, я уточню формат и договорюсь о точном времени.", "Если врач занят, я спокойно подожду и подстроюсь под график."], "mapping": ["D", "I", "C", "S"]}, {"n": 16, "options": ["Мне проще улучшать качество и стандарты.", "Мне проще лидировать и задавать направление.", "Мне проще поддерживать и «держать тыл».", "Мне проще объединять людей и создавать настроение."], "mapping": ["C", "D", "S", "I"]}, {"n": 17, "options": ["В конфликте я предпочитаю сохранить лица и отношения.", "В конфликте я предпочитаю разложить ситуацию по фактам.", "В конфликте я предпочитаю успокоить стороны и снизить напряжение.", "В конфликте я предпочитаю быстро закрыть вопрос."], "mapping": ["I", "C", "S", "D"]}, {"n": 18, "options": ["Я охотно пробую новое, если это вдохновляет.", "Я принимаю новое, когда понятно, как это работает.", "Я нормально отношусь к риску, если есть выгода.", "Я осторожен(на) и предпочитаю проверенное."], "mapping": ["I", "C", "D", "S"]}, {"n": 19, "options": ["Для меня важна корректность и соблюдение стандартов.", "Для меня важны доверие и стабильные отношения с ЛПР.", "Для меня важна репутация и то, как меня воспринимают.", "КПЭ и цифры для меня — главный ориентир."], "mapping": ["C", "S", "I", "D"]}, {"n": 20, "options": ["В переписке пишу коротко и требую конкретики.", "В переписке могу добавить эмоцию, чтобы «оживить» контакт.", "В переписке стараюсь быть мягким(ой) и поддерживающим(ей).", "В переписке тщательно формулирую и проверяю."], "mapping": ["D", "I", "S", "C"]}, {"n": 21, "options": ["Если вижу шанс, действую сразу, не откладывая.", "Если вижу шанс, проверяю, как это скажется на текущих договорённостях.", "Если вижу шанс, оцениваю риски и условия.", "Если вижу шанс, сначала заряжаю людей идеей."], "mapping": ["D", "S", "C", "I"]}, {"n": 22, "options": ["У меня высокий темп и я не люблю «тянуть».", "Мне нравится порядок и логика.", "Мне нравится размеренность и предсказуемость.", "Мне нравится динамика и много общения."], "mapping": ["D", "C", "S", "I"]}, {"n": 23, "options": ["При подготовке к визиту думаю: как быстро расположить к себе.", "При подготовке к визиту думаю: какие данные и материалы понадобятся.", "При подготовке к визиту думаю: как поддержать долгосрочное доверие.", "При подготовке к визиту думаю: какой результат я хочу получить."], "mapping": ["I", "C", "S", "D"]}, {"n": 24, "options": ["После визита думаю, как лучше сопровождать и не потерять связь.", "После визита проверяю, всё ли корректно и что улучшить в процессе.", "После визита фиксирую действия и сразу ставлю следующий шаг.", "После визита отмечаю, что сработало в контакте и эмоциях."], "mapping": ["S", "C", "D", "I"]}];
-  const TIPS = {"D": {"title": "D — Доминирование", "bullets": ["В визите: быстро к сути, фокус на цели/следующем шаге, уверенно работаете с возражениями.", "Сильные стороны: решительность, темп, умение договариваться про конкретику.", "Риски: можете «давить» и недослушивать; важно оставлять место вопросам врача.", "Полезная привычка: задавать 2–3 уточняющих вопроса перед предложением решения."]}, "I": {"title": "I — Влияние", "bullets": ["В визите: контакт, лёгкость, умение вовлечь, хорошо заходят истории/кейсы.", "Сильные стороны: отношения, презентация, мотивация, расширение сети контактов.", "Риски: можно уйти в разговор и потерять структуру/факты; держите «якоря».", "Полезная привычка: завершать визит конкретным договорённым действием и сроком."]}, "S": {"title": "S — Стабильность", "bullets": ["В визите: спокойный темп, доверие, внимательное сопровождение, сильны в долгих циклах.", "Сильные стороны: надёжность, сервисность, удержание ЛПР, качественное сопровождение.", "Риски: сложнее продавливать решения и быстро менять план; тренируйте жёсткость в рамках уважения.", "Полезная привычка: заранее готовить 1–2 «жёстких» формулировки для запроса следующего шага."]}, "C": {"title": "C — Точность", "bullets": ["В визите: факты, исследования, корректность формулировок, выстраивание логики.", "Сильные стороны: доказательная база, качество материалов, аккуратность с регламентами.", "Риски: можно затянуть подготовку и быть слишком осторожным(ой); тренируйте «достаточно хорошо».", "Полезная привычка: лимитировать подготовку по времени и заранее выбрать ключевой месседж."]}};
+<script>
+  // Данные из Excel v2 (вшиты 1:1)
+  const INSTRUCTIONS = ["Формат: 24 блока утверждений. В каждом блоке выберите:","• MOST — утверждение, которое НАИБОЛЕЕ похоже на ваше типичное поведение на работе.","• LEAST — утверждение, которое НАИМЕНЕЕ похоже.","Рекомендации: отвечайте про «обычный рабочий день», не про идеальную версию себя.","Ограничение: это короткая самооценка, НЕ клиническая диагностика и не предназначена для решений о найме.","Счёт по 4 шкалам (D/I/S/C), основной и вторичный стиль, и подсказки для визита к врачу."];
+
+  const BLOCKS = [{"n":1,"options":["Сначала выясняю потребности и внимательно слушаю.","Легко завожу разговор и создаю тёплую атмосферу.","Опираюсь на данные и заранее продумываю детали.","Быстро обозначаю цель визита и веду разговор к решению."],"mapping":["S","I","C","D"]},{"n":2,"options":["Проверяю формулировки и соответствие материалам/регламентам.","Стараюсь поддерживать стабильность и не создавать лишних рисков.","Предпочитаю решать быстро и не затягивать согласования.","Могу «зажечь» и вовлечь и удерживать внимание на презентации."],"mapping":["C","S","D","I"]},{"n":3,"options":["Мне важно, чтобы люди меня поддерживали и я их вдохновлял(а).","Мне важно, чтобы всё было логично и без ошибок.","Мне важно, чтобы было спокойно, предсказуемо и по плану.","Мне важно, чтобы был результат и движение вперёд."],"mapping":["I","C","S","D"]},{"n":4,"options":["В споре я скорее разряжаю обстановку юмором/эмпатией.","В споре я скорее ищу компромисс и сохраняю отношения.","В споре я скорее настаиваю и добиваюсь решения.","В споре я скорее уточняю факты и критерии."],"mapping":["I","S","D","C"]},{"n":5,"options":["Планирую день так, чтобы было место для общения и новых контактов.","Планирую день так, чтобы всё было чётко и по стандартам.","Планирую день так, чтобы всё было спокойно и без перегруза.","Планирую день так, чтобы закрыть максимум задач."],"mapping":["I","C","S","D"]},{"n":6,"options":["Часто нахожу нестандартный подход через личный контакт.","Чаще соблюдаю проверенный сценарий и избегаю экспериментов.","Если нужно — уверенно, спокойно «продавлю» сложное согласование.","Я скорее доработаю материал, чем выйду с сырым вариантом."],"mapping":["I","S","D","C"]},{"n":7,"options":["Нравится, когда отношения долгие и надёжные.","Нравится, когда можно влиять и убеждать.","Нравится, когда есть вызов и победа.","Нравится, когда качество выше скорости."],"mapping":["S","I","D","C"]},{"n":8,"options":["На визите легко импровизирую и подстраиваюсь по настроению.","На визите держу структуру и логический порядок аргументов.","На визите держу темп и веду к следующему шагу.","На визите выдерживаю паузы и даю собеседнику пространство."],"mapping":["I","C","D","S"]},{"n":9,"options":["Если план рушится, я оперативно перестраиваюсь и иду дальше.","Если план рушится, я стараюсь сохранить спокойный темп и отношения.","Если план рушится, я анализирую причины и корректирую систему.","Если план рушится, я включаю энергию и удерживаю позитив."],"mapping":["D","S","C","I"]},{"n":10,"options":["Сложные переговоры для меня — про спокойствие и уважение.","Сложные переговоры для меня — про факты и аргументы.","Сложные переговоры для меня — про победу и результат.","Сложные переговоры для меня — про доверие и контакт."],"mapping":["S","C","D","I"]},{"n":11,"options":["Я чаще уступаю, чтобы сохранить отношения.","Мне проще договориться через эмоции и вовлечение.","Я чаще держусь правил/регламентов и осторожен(на).","Я легко говорю «нет» и ставлю границы."],"mapping":["S","I","C","D"]},{"n":12,"options":["Когда есть дедлайн, уточняю требования и убираю неопределённость.","Когда есть дедлайн, стараюсь сохранить стабильный темп без паники.","Когда есть дедлайн, ускоряю темп и требую фокуса.","Когда есть дедлайн, поднимаю мотивацию и «подзаряжаю» команду."],"mapping":["C","S","D","I"]},{"n":13,"options":["Я скорее проверяю и уточняю, чем начинаю без деталей.","Я скорее начинаю и корректирую по ходу.","Я скорее выжидаю и наблюдаю, чем тороплюсь.","Я скорее вовлекаю людей, чем углубляюсь в детали."],"mapping":["C","D","S","I"]},{"n":14,"options":["Мне легче держать темп и много визитов подряд.","Мне легче глубоко подготовиться и быть точным.","Мне легче строить устойчивые отношения и сопровождать.","Мне легче быть на сцене/в коммуникации и заводить контакты."],"mapping":["D","C","S","I"]},{"n":15,"options":["Я предпочитаю ясность критериев и согласованность данных.","Я предпочитаю стабильность и предсказуемость.","Я предпочитаю динамику, конкуренцию и скорость.","Я предпочитаю общение, свободу и творчество."],"mapping":["C","S","D","I"]},{"n":16,"options":["В конце визита я фиксирую конкретный следующий шаг и срок.","В конце визита я оставляю приятное впечатление и контакт.","В конце визита я уточняю, всё ли корректно и что важно врачу.","В конце визита я подтверждаю договорённость и даю поддержку."],"mapping":["D","I","C","S"]},{"n":17,"options":["Если врач сомневается, я добавлю эмоцию/историю/пример.","Если врач сомневается, я уточню возражение и предложу решение.","Если врач сомневается, я дам время и аккуратно сопровожу.","Если врач сомневается, я предложу данные/исследования/аргументы."],"mapping":["I","D","S","C"]},{"n":18,"options":["В команде я чаще драйвер и тяну вперёд.","В команде я чаще объединяю и создаю атмосферу.","В команде я чаще удерживаю стабильность и поддерживаю.","В команде я чаще контролирую качество и детали."],"mapping":["D","I","S","C"]},{"n":19,"options":["Я быстрее принимаю решение и потом уточняю детали.","Я быстрее уточняю детали и потом принимаю решение.","Я предпочитаю согласовать с людьми и не ломать отношения.","Я предпочитаю вдохновить и увлечь — и решение придёт."],"mapping":["D","C","S","I"]},{"n":20,"options":["Мне проще работать с конфликтом прямо и жёстко.","Мне проще разрядить конфликт и снизить напряжение.","Мне проще избегать конфликта и сохранить мир.","Мне проще перевести конфликт в обсуждение фактов и критериев."],"mapping":["D","I","S","C"]},{"n":21,"options":["Если врач занят, я быстро обозначу цель и «сожму» разговор.","Если врач занят, я попробую зацепить интересом и вовлечь.","Если врач занят, я спокойно подстроюсь и перенесу/согласую.","Если врач занят, я уточню, что именно критично и какие данные нужны."],"mapping":["D","I","S","C"]},{"n":22,"options":["Я чаще работаю через KPI/результаты/план.","Я чаще работаю через отношения/сеть/влияние.","Я чаще работаю через сервисность и сопровождение.","Я чаще работаю через качество и корректность."],"mapping":["D","I","S","C"]},{"n":23,"options":["В подготовке к визиту я скорее ограничу время и сделаю достаточно.","В подготовке к визиту я скорее сделаю идеально и проверю всё.","В подготовке к визиту я скорее учту отношения и историю с врачом.","В подготовке к визиту я скорее подумаю, как подать интересно и вовлечь."],"mapping":["D","C","S","I"]},{"n":24,"options":["После визита думаю, как лучше сопровождать и не потерять связь.","После визита проверяю, всё ли корректно и что улучшить в процессе.","После визита фиксирую действия и сразу ставлю следующий шаг.","После визита отмечаю, что сработало в контакте и эмоциях."],"mapping":["S","C","D","I"]}];
+
+  const TIPS = {"D":{"title":"D — Доминирование","bullets":["• В визите: быстро к сути, фокус на цели/следующем шаге, уверенно работаете с возражениями.","• Сильные стороны: решительность, темп, умение договариваться про конкретику.","• Риски: можете «давить» и недослушивать; важно оставлять место вопросам врача.","• Полезная привычка: задавать 2–3 уточняющих вопроса перед предложением решения."]},"I":{"title":"I — Влияние","bullets":["• В визите: контакт, лёгкость, умение вовлечь, хорошо заходят истории/кейсы.","• Сильные стороны: отношения, презентация, мотивация, расширение сети контактов.","• Риски: можно уйти в разговор и потерять структуру/факты; держите «якоря».","• Полезная привычка: завершать визит конкретным договорённым действием и сроком."]},"S":{"title":"S — Стабильность","bullets":["• В визите: спокойный темп, доверие, внимательное сопровождение, сильны в долгих циклах.","• Сильные стороны: надёжность, сервисность, удержание ЛПР, качественное сопровождение.","• Риски: сложнее продавливать решения и быстро менять план; тренируйте жёсткость в рамках уважения.","• Полезная привычка: заранее готовить 1–2 «жёстких» формулировки для запроса следующего шага."]},"C":{"title":"C — Точность","bullets":["• В визите: факты, исследования, корректность формулировок, выстраивание логики.","• Сильные стороны: доказательная база, качество материалов, аккуратность с регламентами.","• Риски: можно затянуть подготовку и быть слишком осторожным(ой); тренируйте «достаточно хорошо».","• Полезная привычка: лимитировать подготовку по времени и заранее выбрать ключевой месседж."]}};
 
   const STYLES = ["D","I","S","C"];
   const STYLE_FULL = {
@@ -198,33 +200,29 @@
   const progFill = document.getElementById('progFill');
   const btnCalc = document.getElementById('btnCalc');
   const btnReset = document.getElementById('btnReset');
+  const btnDownload = document.getElementById('btnDownload');
   const toastEl = document.getElementById('toast');
+
+  let lastResult = null;
 
   function toast(msg){
     toastEl.textContent = msg;
     toastEl.style.display = 'block';
     clearTimeout(toastEl._t);
-    toastEl._t = setTimeout(()=>toastEl.style.display='none', 2600);
-  }
-
-  function renderInstructions(){
-    // Берём строки из Excel-листа «Инструкция» и форматируем кратко
-    const lines = INSTRUCTIONS.filter(x => x && typeof x === 'string');
-    // Оставим только содержательные строки, без заголовка
-    const cleaned = [];
-    for (const s of lines){
-      if (s.startsWith('DISC ')) continue;
-      if (s === 'Как проходить') continue;
-      cleaned.push(s);
-    }
-    const html = cleaned.map(s => `<div>${escapeHtml(s)}</div>`).join('');
-    document.getElementById('instructions').innerHTML = html;
+    toastEl._t = setTimeout(()=>toastEl.style.display='none', 2200);
   }
 
   function escapeHtml(s){
     return String(s).replace(/[&<>"']/g, (m)=>({
       '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
     }[m]));
+  }
+
+  function renderInstructions(){
+    document.getElementById('instructions').innerHTML = INSTRUCTIONS
+      .filter(Boolean)
+      .map(s=>`<div>${escapeHtml(s)}</div>`)
+      .join('');
   }
 
   function build(){
@@ -236,9 +234,7 @@
 
       wrap.innerHTML = `
         <div class="blockTop">
-          <div>
-            <div class="bTitle">Блок ${b.n}</div>
-          </div>
+          <div><div class="bTitle">Блок ${b.n}</div></div>
           <div class="controls">
             <label>
               <div style="font-size:11px;color:var(--muted);margin:0 0 4px;text-transform:uppercase;letter-spacing:.6px">MOST</div>
@@ -264,12 +260,7 @@
         </div>
 
         <table>
-          <thead>
-            <tr>
-              <th style="width:64px">№</th>
-              <th>Фраза</th>
-            </tr>
-          </thead>
+          <thead><tr><th style="width:64px">№</th><th>Фраза</th></tr></thead>
           <tbody>
             ${b.options.map((t,i)=>`<tr><td style="font-family:var(--mono);font-weight:900">${i+1}</td><td class="opt">${escapeHtml(t)}</td></tr>`).join("")}
           </tbody>
@@ -279,33 +270,34 @@
       `;
 
       blocksRoot.appendChild(wrap);
+
       const most = wrap.querySelector('select.most');
       const least = wrap.querySelector('select.least');
+
       most.addEventListener('change', ()=> onChange(idx));
       least.addEventListener('change', ()=> onChange(idx));
     });
 
-    updateProgress();
-    renderScoreRows({D:0,I:0,S:0,C:0}, {D:0,I:0,S:0,C:0}, {D:0,I:0,S:0,C:0});
     renderInstructions();
+    updateProgress();
+    renderEmptyResult();
   }
 
   function onChange(idx){
     const node = document.querySelector(`.block[data-block="${idx}"]`);
     const most = node.querySelector('select.most').value;
     const least = node.querySelector('select.least').value;
-    const err = node.querySelector('.err');
 
     const isBad = most && least && most === least;
-    err.style.display = isBad ? 'block' : 'none';
 
-    // Дуракаустойчиво: если выбрал одинаково — очищаем LEAST
     if (isBad){
+      // Дуракаустойчиво: если выбрал одинаково — очищаем LEAST
       node.querySelector('select.least').value = '';
-      err.style.display = 'none';
       toast('MOST и LEAST должны быть разными — LEAST очищен.');
     }
 
+    lastResult = null;
+    renderEmptyResult(true);
     updateProgress();
   }
 
@@ -320,7 +312,10 @@
     answeredEl.textContent = ok;
     const pct = Math.round((ok / BLOCKS.length) * 100);
     progFill.style.width = pct + '%';
+
+    // Кнопки
     btnCalc.disabled = ok !== BLOCKS.length;
+    btnDownload.disabled = !(ok === BLOCKS.length && lastResult); // включится после расчёта
   }
 
   function score(){
@@ -343,14 +338,29 @@
     const net = {D:0,I:0,S:0,C:0};
     for (const k of STYLES) net[k] = mostCount[k] - leastCount[k];
 
-    return { mostCount, leastCount, net };
+    const order = STYLES.map(k => ({k, v:net[k]})).sort((a,b)=>b.v-a.v);
+    const lead = order[0]?.k || '—';
+    const second = order[1]?.k || '—';
+    const diff = (order[0] && order[1]) ? (order[0].v - order[1].v) : null;
+
+    return { mostCount, leastCount, net, order, lead, second, diff };
+  }
+
+  function renderEmptyResult(keepHints){
+    if (!keepHints){
+      document.getElementById('leadBadge').textContent = 'DISC';
+      document.getElementById('leadText').textContent = '—';
+      document.getElementById('mixNote').textContent = '';
+      document.getElementById('visitTips').innerHTML = '<span style="color:var(--muted)">Заполни тест — и здесь появятся рекомендации.</span>';
+    }
+    renderScoreRows({D:0,I:0,S:0,C:0}, {D:0,I:0,S:0,C:0}, {D:0,I:0,S:0,C:0});
   }
 
   function renderScoreRows(mostCount, leastCount, net){
     const wrap = document.getElementById('scoreRows');
     wrap.innerHTML = '';
 
-    // net range: [-24..+24]
+    // NET range: [-24..+24]
     const maxAbs = 24;
     const toPct = (v) => Math.round(((v + maxAbs) / (2*maxAbs)) * 100);
 
@@ -372,52 +382,159 @@
       `;
       wrap.appendChild(row);
     });
+  }
 
-    const lead = order[0]?.k || '—';
-    const second = order[1]?.k || '—';
-
-    document.getElementById('leadBadge').textContent = lead;
-    document.getElementById('leadText').textContent = lead === '—' ? '—' : `Основной стиль: ${STYLE_FULL[lead]}`;
-
-    const diff = (order[0] && order[1]) ? (order[0].v - order[1].v) : null;
-    const mixNote = document.getElementById('mixNote');
-    if (diff === null) mixNote.textContent = '';
-    else if (diff <= 2) mixNote.textContent = `Смешанный профиль: ${lead}/${second} (разница NET = ${diff}).`;
-    else mixNote.textContent = `Вторичный стиль: ${STYLE_FULL[second]}. Разница NET = ${diff}.`;
-
-    // tips
+  function renderTipsForLead(lead){
     const tipsBox = document.getElementById('visitTips');
-    if (lead === '—' || !TIPS[lead]){
+    if (!lead || lead === '—' || !TIPS[lead]){
       tipsBox.innerHTML = '<span style="color:var(--muted)">Заполни тест — и здесь появятся рекомендации.</span>';
-    } else {
-      const t = TIPS[lead];
-      tipsBox.innerHTML = `
-        <div style="font-weight:900; margin-bottom:6px">${escapeHtml(t.title)}</div>
-        <ul class="list">
-          ${(t.bullets||[]).map(x=>`<li>${escapeHtml(x)}</li>`).join("")}
-        </ul>
-      `;
+      return;
     }
+    const t = TIPS[lead];
+    tipsBox.innerHTML = `
+      <div style="font-weight:900; margin-bottom:6px">${escapeHtml(t.title)}</div>
+      <ul class="list">
+        ${(t.bullets||[]).map(x=>`<li>${escapeHtml(x.replace(/^•\s?/,''))}</li>`).join("")}
+      </ul>
+    `;
   }
 
   function calcAndShow(){
     const r = score();
     if (!r){ toast('Заполни все блоки: MOST и LEAST должны быть выбраны и различаться.'); return; }
+
+    lastResult = r;
+
+    document.getElementById('leadBadge').textContent = r.lead;
+    document.getElementById('leadText').textContent = `Основной стиль: ${STYLE_FULL[r.lead]}`;
+
+    if (r.diff === null) document.getElementById('mixNote').textContent = '';
+    else if (r.diff <= 2) document.getElementById('mixNote').textContent = `Смешанный профиль: ${r.lead}/${r.second} (разница NET = ${r.diff}).`;
+    else document.getElementById('mixNote').textContent = `Вторичный стиль: ${STYLE_FULL[r.second]}. Разница NET = ${r.diff}.`;
+
     renderScoreRows(r.mostCount, r.leastCount, r.net);
+    renderTipsForLead(r.lead);
+
+    btnDownload.disabled = false;
     document.getElementById('resultCard').scrollIntoView({behavior:'smooth', block:'start'});
   }
 
   function resetAll(){
     document.querySelectorAll('select.sel').forEach(s => s.value = '');
-    document.querySelectorAll('.err').forEach(e => e.style.display = 'none');
+    lastResult = null;
+    renderEmptyResult();
     updateProgress();
-    renderScoreRows({D:0,I:0,S:0,C:0}, {D:0,I:0,S:0,C:0}, {D:0,I:0,S:0,C:0});
     toast('Сброшено.');
     window.scrollTo({top:0, behavior:'smooth'});
   }
 
+  function getNowStamp(){
+    const d = new Date();
+    const pad = (n)=> String(n).padStart(2,'0');
+    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}`;
+  }
+
+  function downloadResultPDF(){
+    // На всякий случай пересчитаем, если пользователь не нажал "Показать результат"
+    let r = lastResult;
+    if (!r) r = score();
+    if (!r){ toast('Сначала заполни все блоки и нажми «Показать результат».'); return; }
+
+    const tips = (r.lead && TIPS[r.lead]) ? TIPS[r.lead] : null;
+
+    const esc = escapeHtml;
+    const rows = STYLES.map(k=>`
+      <tr>
+        <td style="font-family: ui-monospace, Menlo, Consolas, monospace; font-weight:900;">${k}</td>
+        <td>${r.mostCount[k]}</td>
+        <td>${r.leastCount[k]}</td>
+        <td style="font-family: ui-monospace, Menlo, Consolas, monospace; font-weight:900;">${r.net[k]>=0?"+":""}${r.net[k]}</td>
+      </tr>
+    `).join('');
+
+    const bullets = tips ? (tips.bullets||[]).map(x=>`<li>${esc(x.replace(/^•\s?/,''))}</li>`).join('') : '';
+
+    const diffText = (r.diff===null) ? '' : (r.diff<=2 ? `Смешанный профиль: ${r.lead}/${r.second} (разница NET = ${r.diff}).`
+                                                   : `Вторичный стиль: ${STYLE_FULL[r.second]}. Разница NET = ${r.diff}.`);
+
+    const html = `
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>DISC_result_${getNowStamp()}</title>
+  <style>
+    @page { size: A4; margin: 16mm; }
+    body{ font-family: Arial, system-ui, sans-serif; color:#0b1220; }
+    .head{display:flex; gap:12px; align-items:center; margin-bottom:10px;}
+    .logo{width:38px; height:38px; border-radius:12px; background: linear-gradient(135deg, #0057B8, #00A3E0);}
+    h1{margin:0; font-size:18px;}
+    .sub{color:#5b667a; font-size:12px; margin:2px 0 12px;}
+    .box{border:1px solid #e3e8f2; border-radius:14px; padding:12px; margin:10px 0;}
+    table{width:100%; border-collapse:collapse; margin-top:8px;}
+    th, td{border-bottom:1px solid #e3e8f2; padding:8px; font-size:12px; text-align:left;}
+    th{color:#5b667a; text-transform:uppercase; letter-spacing:.6px;}
+    .badge{display:inline-block; padding:4px 10px; border-radius:999px; background:#f1f5ff; border:1px solid #dbe6ff; font-weight:900; font-family: ui-monospace, Menlo, Consolas, monospace;}
+    ul{margin:6px 0 0; padding-left:18px;}
+    li{margin:6px 0; font-size:12px;}
+    .muted{color:#5b667a; font-size:12px;}
+  </style>
+</head>
+<body>
+  <div class="head">
+    <div class="logo"></div>
+    <div>
+      <h1>DISC — результат самооценки</h1>
+      <div class="sub">Медицинские представители • NET = MOST − LEAST • сформировано локально</div>
+    </div>
+  </div>
+
+  <div class="box">
+    <div class="muted">Основной стиль</div>
+    <div style="font-size:16px; font-weight:900; margin:4px 0;">
+      <span class="badge">${r.lead}</span> &nbsp; ${esc(STYLE_FULL[r.lead])}
+    </div>
+    <div class="muted">${esc(diffText)}</div>
+  </div>
+
+  <div class="box">
+    <div style="font-weight:900; font-size:13px; margin-bottom:6px;">Счёт по шкалам</div>
+    <table>
+      <thead><tr><th style="width:50px;">Шкала</th><th>MOST</th><th>LEAST</th><th>NET</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>
+
+  <div class="box">
+    <div style="font-weight:900; font-size:13px; margin-bottom:6px;">Рекомендации для визита (по ведущему стилю)</div>
+    ${
+      tips
+      ? `<div style="font-weight:900; margin-bottom:6px;">${esc(tips.title)}</div><ul>${bullets}</ul>`
+      : `<div class="muted">Нет данных для рекомендаций.</div>`
+    }
+  </div>
+
+  <div class="muted">
+    Примечание: это базовая самооценка для развития коммуникации. Не является клинической диагностикой и не предназначена для решений о найме.
+  </div>
+</body>
+</html>
+    `;
+
+    const w = window.open('', '_blank');
+    if (!w){ toast('Браузер заблокировал всплывающее окно. Разреши pop-up для этого сайта.'); return; }
+    w.document.open();
+    w.document.write(html);
+    w.document.close();
+    w.focus();
+
+    // Печать -> "Save as PDF"
+    setTimeout(()=>{ w.print(); }, 250);
+  }
+
   btnCalc.addEventListener('click', calcAndShow);
   btnReset.addEventListener('click', resetAll);
+  btnDownload.addEventListener('click', downloadResultPDF);
 
   build();
 </script>
