@@ -2,24 +2,20 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>DISC — Самопрофиль для медицинских представителей</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DISC — самооценка (медицинские представители)</title>
   <style>
     :root{
-      /* "Sandoz-like" clean corporate palette (adjust if you have official brand HEX) */
+      /* Подгони под ваш бренд-гайд при необходимости */
       --bg:#f6f8fb;
       --card:#ffffff;
       --text:#0b1220;
       --muted:#5b667a;
       --line:#e3e8f2;
-
-      /* accents */
-      --primary:#1b5cff;   /* deep corporate blue */
-      --primary2:#00a3ff;  /* bright blue */
+      --primary:#0057B8;   /* если у тебя есть точные HEX Sandoz — заменим */
+      --primary2:#00A3E0;
       --good:#12b76a;
-      --warn:#f79009;
       --bad:#f04438;
-
       --shadow: 0 10px 25px rgba(11,18,32,.08);
       --radius: 16px;
       --radius2: 22px;
@@ -32,237 +28,74 @@
       margin:0;
       font-family:var(--sans);
       color:var(--text);
-      background: radial-gradient(1200px 600px at 15% -10%, rgba(27,92,255,.12), transparent 55%),
-                  radial-gradient(1200px 600px at 95% 0%, rgba(0,163,255,.10), transparent 55%),
-                  var(--bg);
+      background:
+        radial-gradient(1200px 600px at 15% -10%, rgba(0,87,184,.12), transparent 55%),
+        radial-gradient(1200px 600px at 95% 0%, rgba(0,163,224,.10), transparent 55%),
+        var(--bg);
     }
 
-    .wrap{max-width:1100px; margin:0 auto; padding:24px 16px 60px;}
-    .topbar{
-      display:flex; gap:16px; align-items:center; justify-content:space-between;
-      margin-bottom:18px;
-    }
-    .brand{
-      display:flex; gap:12px; align-items:center;
-    }
-    .logo{
-      width:42px; height:42px; border-radius:14px;
-      background: linear-gradient(135deg, var(--primary), var(--primary2));
-      box-shadow: var(--shadow);
-    }
-    h1{margin:0; font-size:20px; letter-spacing:.2px}
-    .subtitle{margin:2px 0 0; color:var(--muted); font-size:13px}
+    .wrap{max-width:1120px; margin:0 auto; padding:24px 16px 64px;}
+    .topbar{display:flex; gap:16px; align-items:center; justify-content:space-between; margin-bottom:18px; flex-wrap:wrap;}
+    .brand{display:flex; gap:12px; align-items:center;}
+    .logo{width:44px; height:44px; border-radius:14px; background: linear-gradient(135deg, var(--primary), var(--primary2)); box-shadow: var(--shadow);}
+    h1{margin:0; font-size:20px; letter-spacing:.2px;}
+    .subtitle{margin:2px 0 0; color:var(--muted); font-size:13px; line-height:1.3;}
 
-    .actions{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
-    button{
-      border:0;
-      border-radius:12px;
-      padding:10px 12px;
-      font-weight:600;
-      cursor:pointer;
-      background: var(--primary);
-      color:white;
-      box-shadow: 0 8px 18px rgba(27,92,255,.20);
-    }
-    button.secondary{
-      background:#fff;
-      color:var(--text);
-      border:1px solid var(--line);
-      box-shadow:none;
-    }
-    button:disabled{opacity:.55; cursor:not-allowed}
+    .actions{display:flex; gap:10px; flex-wrap:wrap;}
+    button{border:0; border-radius:12px; padding:10px 12px; font-weight:700; cursor:pointer; background: var(--primary); color:white; box-shadow: 0 8px 18px rgba(0,87,184,.20);}
+    button.secondary{background:#fff; color:var(--text); border:1px solid var(--line); box-shadow:none;}
+    button:disabled{opacity:.55; cursor:not-allowed;}
 
-    .grid{
-      display:grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap:16px;
-      align-items:start;
-    }
-    @media (max-width: 980px){
-      .grid{grid-template-columns: 1fr}
-      .actions{justify-content:flex-start}
-    }
+    .grid{display:grid; grid-template-columns: 1.2fr .8fr; gap:16px; align-items:start;}
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
 
-    .card{
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: var(--radius2);
-      box-shadow: var(--shadow);
-      padding:16px;
-    }
-    .card h2{margin:0 0 10px; font-size:16px}
-    .hint{color:var(--muted); font-size:13px; line-height:1.4}
-    .pillrow{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
-    .pill{
-      font-size:12px;
-      padding:6px 10px;
-      border-radius:999px;
-      background:#f1f5ff;
-      border:1px solid #dbe6ff;
-      color:#1b2d6b;
-      font-weight:600;
-    }
+    .card{background: var(--card); border: 1px solid var(--line); border-radius: var(--radius2); box-shadow: var(--shadow); padding:16px;}
+    .card h2{margin:0 0 10px; font-size:16px;}
+    .hint{color:var(--muted); font-size:13px; line-height:1.45;}
 
-    .testHeader{
-      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
-      margin-bottom:10px;
-    }
+    .pillrow{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;}
+    .pill{font-size:12px; padding:6px 10px; border-radius:999px; background:#f1f5ff; border:1px solid #dbe6ff; color:#1b2d6b; font-weight:700;}
 
-    .progress{
-      display:flex; align-items:center; gap:10px; color:var(--muted); font-size:13px;
-    }
-    .bar{
-      width:190px; height:10px; background:#edf1f7; border-radius:999px; overflow:hidden;
-      border:1px solid var(--line);
-    }
-    .bar > div{
-      height:100%;
-      width:0%;
-      background: linear-gradient(90deg, var(--primary), var(--primary2));
-    }
+    .testHeader{display:flex; align-items:flex-start; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:10px;}
+    .progress{display:flex; align-items:center; gap:10px; color:var(--muted); font-size:13px;}
+    .bar{width:190px; height:10px; background:#edf1f7; border-radius:999px; overflow:hidden; border:1px solid var(--line);}
+    .bar > div{height:100%; width:0%; background: linear-gradient(90deg, var(--primary), var(--primary2));}
 
-    .block{
-      border:1px solid var(--line);
-      border-radius: var(--radius);
-      padding:12px;
-      margin:10px 0;
-      background: #fff;
-    }
-    .blockTop{
-      display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
-      align-items:flex-start;
-      margin-bottom:8px;
-    }
-    .bTitle{font-weight:800; font-size:13px}
-    .bMap{
-      font-family:var(--mono);
-      font-size:12px;
-      color:var(--muted);
-    }
+    .block{border:1px solid var(--line); border-radius: var(--radius); padding:12px; margin:10px 0; background:#fff;}
+    .blockTop{display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; align-items:flex-start; margin-bottom:8px;}
+    .bTitle{font-weight:900; font-size:13px;}
 
-    table{width:100%; border-collapse:separate; border-spacing:0; overflow:hidden}
-    th, td{padding:10px; vertical-align:top; border-bottom:1px solid var(--line)}
-    th{font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.6px}
-    tr:last-child td{border-bottom:none}
-    .opt{
-      font-size:13px;
-      line-height:1.35;
-    }
-    .controls{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:8px;
-      min-width:220px;
-    }
-    select{
-      width:100%;
-      padding:10px 10px;
-      border-radius:12px;
-      border:1px solid var(--line);
-      background:#fff;
-      font-weight:700;
-      outline:none;
-    }
-    .err{
-      margin-top:8px;
-      padding:10px 12px;
-      border-radius:12px;
-      border:1px solid rgba(240,68,56,.35);
-      background: rgba(240,68,56,.06);
-      color: #8a1f1a;
-      font-size:13px;
-      display:none;
-    }
+    table{width:100%; border-collapse:separate; border-spacing:0; overflow:hidden;}
+    th, td{padding:10px; vertical-align:top; border-bottom:1px solid var(--line);}
+    th{font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.6px;}
+    tr:last-child td{border-bottom:none;}
+    .opt{font-size:13px; line-height:1.35;}
 
-    .scoreGrid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:10px;
-      margin-top:10px;
-    }
-    .scoreCard{
-      border:1px solid var(--line);
-      border-radius: var(--radius);
-      padding:12px;
-      background: linear-gradient(180deg, rgba(27,92,255,.05), transparent 55%);
-    }
-    .scoreRow{
-      display:grid;
-      grid-template-columns: 50px 1fr 55px;
-      align-items:center;
-      gap:10px;
-      margin:8px 0;
-    }
-    .scoreRow .k{font-family:var(--mono); font-weight:900}
-    .meter{
-      height:10px; background:#edf1f7; border-radius:999px; overflow:hidden; border:1px solid var(--line);
-    }
-    .meter > div{height:100%; width:0%;}
-    .v{font-family:var(--mono); font-weight:800; text-align:right}
+    .controls{display:grid; grid-template-columns: 1fr 1fr; gap:8px; min-width:250px;}
+    select{width:100%; padding:10px 10px; border-radius:12px; border:1px solid var(--line); background:#fff; font-weight:800; outline:none;}
 
-    .resultTitle{
-      display:flex; align-items:flex-start; justify-content:space-between; gap:10px; flex-wrap:wrap;
-      margin-top:6px;
-    }
-    .badge{
-      padding:6px 10px;
-      border-radius:999px;
-      font-weight:900;
-      font-family:var(--mono);
-      background:#f1f5ff;
-      border:1px solid #dbe6ff;
-      color:#1b2d6b;
-      white-space:nowrap;
-    }
+    .err{margin-top:8px; padding:10px 12px; border-radius:12px; border:1px solid rgba(240,68,56,.35); background: rgba(240,68,56,.06); color:#8a1f1a; font-size:13px; display:none;}
 
-    .small{
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.4;
-      margin-top:8px;
-    }
+    .scoreCard{border:1px solid var(--line); border-radius: var(--radius); padding:12px; background: linear-gradient(180deg, rgba(0,87,184,.05), transparent 55%);}
+    .resultTitle{display:flex; align-items:flex-start; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-top:6px;}
+    .badge{padding:6px 10px; border-radius:999px; font-weight:900; font-family:var(--mono); background:#f1f5ff; border:1px solid #dbe6ff; color:#1b2d6b; white-space:nowrap;}
 
-    .accordion{
-      margin-top:10px;
-      border-top:1px dashed var(--line);
-      padding-top:10px;
-    }
-    details{
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:10px 12px;
-      background:#fff;
-      margin:8px 0;
-    }
-    summary{
-      cursor:pointer;
-      font-weight:800;
-      font-size:13px;
-    }
-    .list{margin:8px 0 0; padding-left:18px; color:var(--text)}
-    .list li{margin:6px 0; color:var(--text)}
-    .muted{color:var(--muted)}
-    .foot{
-      margin-top:14px;
-      font-size:12px;
-      color:var(--muted);
-      border-top:1px solid var(--line);
-      padding-top:12px;
-    }
-    .toast{
-      position:fixed;
-      left:50%;
-      transform:translateX(-50%);
-      bottom:16px;
-      background:#0b1220;
-      color:#fff;
-      padding:10px 12px;
-      border-radius:999px;
-      box-shadow:var(--shadow);
-      font-size:13px;
-      display:none;
-      max-width:min(92vw, 560px);
-    }
+    .scoreRow{display:grid; grid-template-columns: 50px 1fr 60px; align-items:center; gap:10px; margin:10px 0;}
+    .scoreRow .k{font-family:var(--mono); font-weight:900;}
+    .meter{height:10px; background:#edf1f7; border-radius:999px; overflow:hidden; border:1px solid var(--line);}
+    .meter > div{height:100%; width:0%; background: linear-gradient(90deg, var(--primary), var(--primary2));}
+    .v{font-family:var(--mono); font-weight:900; text-align:right;}
+
+    details{border:1px solid var(--line); border-radius:14px; padding:10px 12px; background:#fff; margin:10px 0;}
+    summary{cursor:pointer; font-weight:900; font-size:13px;}
+    .list{margin:8px 0 0; padding-left:18px;}
+    .list li{margin:6px 0;}
+
+    .foot{margin-top:14px; font-size:12px; color:var(--muted); border-top:1px solid var(--line); padding-top:12px;}
+
+    .toast{position:fixed; left:50%; transform:translateX(-50%); bottom:16px; background:#0b1220; color:#fff; padding:10px 12px; border-radius:999px; box-shadow:var(--shadow); font-size:13px; display:none; max-width:min(92vw, 560px);}
+
+    .small{color:var(--muted); font-size:12px; line-height:1.45; margin-top:8px;}
   </style>
 </head>
 <body>
@@ -271,8 +104,8 @@
       <div class="brand">
         <div class="logo" aria-hidden="true"></div>
         <div>
-          <h1>DISC — Самопрофиль для медицинских представителей</h1>
-          <div class="subtitle">Формат: 24 блока • выбери MOST и LEAST в каждом блоке • результат появится сразу</div>
+          <h1>DISC — самооценка (медицинские представители)</h1>
+          <div class="subtitle">Формат: 24 блока • MOST/LEAST выбираются как «Вариант 1–4» • расчёт выполняется на странице (без отправки данных)</div>
         </div>
       </div>
       <div class="actions">
@@ -282,25 +115,17 @@
     </div>
 
     <div class="grid">
-      <!-- LEFT: TEST -->
       <div class="card" id="testCard">
         <div class="testHeader">
           <div>
             <h2>Инструкция</h2>
-            <div class="hint">
-              В каждом блоке есть 4 фразы. Выбери:
-              <b>MOST</b> — какая фраза <b>наиболее похожа на твоё поведение</b>,
-              и <b>LEAST</b> — какая <b>наименее похожа</b>.
-              В одном блоке MOST и LEAST должны быть <b>разными</b>.
-              Отвечай, как ты ведёшь себя <b>обычно</b>, а не “как правильно”.
-            </div>
+            <div class="hint" id="instructions"></div>
             <div class="pillrow">
               <div class="pill">MOST/LEAST = выбор варианта, не оценка</div>
               <div class="pill">Время: 6–10 минут</div>
-              <div class="pill">Это самооценка, не диагностика</div>
+              <div class="pill">Самопрофиль, не диагностика</div>
             </div>
           </div>
-
           <div class="progress" aria-live="polite">
             <div class="bar" aria-hidden="true"><div id="progFill"></div></div>
             <div><span id="answered">0</span>/24 заполнено</div>
@@ -309,591 +134,292 @@
 
         <div id="blocks"></div>
 
-        <div class="foot">
-          Совет: если сомневаешься — выбирай вариант, который ты делаешь <b>первым</b> или <b>под давлением</b>.
-        </div>
+        <div class="foot">Подсказка: если сомневаешься — выбирай вариант, который чаще проявляется <b>на работе</b> или <b>под давлением</b>.</div>
       </div>
 
-      <!-- RIGHT: RESULT -->
       <div class="card" id="resultCard">
         <h2>Результат</h2>
-        <div class="hint">Заполни все 24 блока и нажми “Показать результат”.</div>
+        <div class="hint">Заполни все 24 блока и нажми «Показать результат».</div>
 
-        <div class="scoreGrid">
-          <div class="scoreCard">
-            <div class="resultTitle">
-              <div>
-                <div class="hint muted">Суммы (NET = MOST − LEAST)</div>
-                <div style="font-size:18px; font-weight:900; margin-top:2px" id="leadText">—</div>
-              </div>
-              <div class="badge" id="leadBadge">DISC</div>
+        <div class="scoreCard" style="margin-top:10px;">
+          <div class="resultTitle">
+            <div>
+              <div class="hint" style="margin-bottom:2px;">NET = MOST − LEAST</div>
+              <div style="font-size:18px; font-weight:900;" id="leadText">—</div>
             </div>
-
-            <div id="scoreRows"></div>
-
-            <div class="small" id="mixNote"></div>
+            <div class="badge" id="leadBadge">DISC</div>
           </div>
 
-          <div class="accordion" id="explainWrap">
-            <details open>
-              <summary>Как читать результат</summary>
-              <ul class="list">
-                <li><b>Лидирующий стиль</b> — максимальный NET.</li>
-                <li><b>Вторичный стиль</b> — следующий по величине NET.</li>
-                <li>Если разница между 1 и 2 стилем маленькая — у тебя <b>смешанный профиль</b>.</li>
-              </ul>
-            </details>
-
-            <details>
-              <summary>Рекомендации для визита (под медицинского представителя)</summary>
-              <div id="visitTips" class="hint" style="margin-top:8px"></div>
-            </details>
-
-            <details>
-              <summary>Предупреждения и риски интерпретации</summary>
-              <ul class="list">
-                <li>Это быстрый опросник самооценки. Он помогает понять предпочтения, но не заменяет ассессмент.</li>
-                <li>Ответы зависят от роли/контекста/усталости; лучше проходить в спокойном состоянии.</li>
-                <li>Для развития важнее не “какой ты”, а “как ты адаптируешь стиль под врача/аптеку/ситуацию”.</li>
-              </ul>
-            </details>
-          </div>
+          <div id="scoreRows"></div>
+          <div class="small" id="mixNote"></div>
         </div>
+
+        <details open>
+          <summary>Как читать результат</summary>
+          <ul class="list">
+            <li><b>Лидирующий стиль</b> — максимальный NET.</li>
+            <li><b>Вторичный стиль</b> — второй по величине NET.</li>
+            <li>Если разница между 1 и 2 стилем ≤ 2 — вероятен <b>смешанный профиль</b> (норма для медпреда).</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>Рекомендации для визита (из справочника)</summary>
+          <div class="hint" id="visitTips" style="margin-top:8px;"></div>
+        </details>
+
+        <details>
+          <summary>Важно</summary>
+          <ul class="list">
+            <li>Страница работает офлайн/локально: результаты никуда не отправляются.</li>
+            <li>Это базовый самопрофиль для развития коммуникации и адаптации стиля.</li>
+          </ul>
+        </details>
       </div>
     </div>
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script>
-/**
- * DISC forced-choice test (24 blocks).
- * Each block has 4 statements mapped 1:1 to D/I/S/C (one per option).
- * User selects MOST and LEAST option number (1..4).
- * Scoring: each MOST adds +1 to its style; each LEAST adds +1 to its style in LEAST column;
- * NET = MOST - LEAST.
- *
- * NOTE: This is a basic self-profile tool. If you need exact mapping from your Excel v2,
- * replace statements below with your definitive items.
- */
+<script>  const INSTRUCTIONS = ["DISC самооценочный тест (базовый) для медицинских представителей", "Формат: 24 блока утверждений. В каждом блоке выберите:", "• MOST — утверждение, которое НАИБОЛЕЕ похоже на ваше типичное поведение на работе.", "• LEAST — утверждение, которое НАИМЕНЕЕ похоже.", "Рекомендации: отвечайте про «обычный рабочий день», не про идеальную версию себя.", "Ограничение: базовая самооценка для развития, не используется для решений о найме."];
+  const BLOCKS = [{"n": 1, "options": ["Сначала выясняю потребности и внимательно слушаю.", "Легко завожу разговор и создаю тёплую атмосферу.", "Опираюсь на данные и заранее продумываю детали.", "Быстро обозначаю цель визита и веду разговор к решению."], "mapping": ["S", "I", "C", "D"]}, {"n": 2, "options": ["Проверяю формулировки и соответствие материалам/регламентам.", "Стараюсь снизить напряжение и найти общую точку зрения.", "Если врач сомневается, я чётко аргументирую и предлагаю следующий шаг.", "Умею вовлечь и удерживать внимание на презентации."], "mapping": ["C", "S", "D", "I"]}, {"n": 3, "options": ["Мне важно, чтобы люди меня поддерживали и я их вдохновлял(а).", "Я замечаю неточности и люблю разбираться, «как устроено».", "Я предпочитаю стабильный темп и предсказуемые договорённости.", "Мне комфортно принимать решения при неполной информации."], "mapping": ["I", "C", "S", "D"]}, {"n": 4, "options": ["В споре я скорее разряжаю обстановку юмором/эмпатией.", "В споре я скорее ищу компромисс.", "В споре я скорее настаиваю на позиции.", "В споре я скорее уточняю факты и критерии."], "mapping": ["I", "S", "D", "C"]}, {"n": 5, "options": ["Планирую день так, чтобы было место для общения и новых контактов.", "Планирую день так, чтобы без рывков и с запасом по времени.", "Планирую день так, чтобы всё было выверено и по чек-листу.", "Планирую день так, чтобы закрыть максимум задач."], "mapping": ["I", "S", "C", "D"]}, {"n": 6, "options": ["Часто нахожу нестандартный подход через личный контакт.", "Собираю доказательства и аккуратно документирую договорённости.", "Слежу, чтобы всем было комфортно и никто не «выпал» из процесса.", "Если нужно, спокойно «продавлю» сложное согласование."], "mapping": ["I", "C", "S", "D"]}, {"n": 7, "options": ["Нравится, когда отношения долгие и надёжные.", "Нравится признание, публичность и энергия команды.", "Нравится конкуренция и измеримый результат.", "Нравится, когда качество выше скорости."], "mapping": ["S", "I", "D", "C"]}, {"n": 8, "options": ["На визите легко импровизирую и подстраиваюсь по настроению.", "На визите держу структуру и логику подачи материала.", "На визите могу быстро перейти к запросу/договорённости.", "На визите выдерживаю паузы и даю собеседнику пространство."], "mapping": ["I", "C", "D", "S"]}, {"n": 9, "options": ["Если план рушится, я оперативно перестраиваюсь и иду дальше.", "Если план рушится, я стараюсь снизить риски и выровнять процесс.", "Если план рушится, я сохраняю позитив и «заражаю» им.", "Если план рушится, я анализирую причины и корректирую систему."], "mapping": ["D", "S", "I", "C"]}, {"n": 10, "options": ["Сложные переговоры для меня — про спокойствие и уважение.", "Сложные переговоры для меня — про факты и корректность.", "Сложные переговоры для меня — про результат.", "Сложные переговоры для меня — про доверие и контакт."], "mapping": ["S", "C", "D", "I"]}, {"n": 11, "options": ["Я чаще уступаю, чтобы сохранить отношения.", "Мне проще убедить через эмоции и примеры.", "Я предпочитаю формальные правила и ясные критерии.", "Я легко говорю «нет» и ставлю границы."], "mapping": ["S", "I", "C", "D"]}, {"n": 12, "options": ["Когда есть дедлайн, уточняю требования и убираю неопределённость.", "Когда есть дедлайн, распределяю нагрузку и поддерживаю стабильность.", "Когда есть дедлайн, мотивирую людей и поднимаю дух.", "Когда есть дедлайн, ускоряю темп и требую фокуса."], "mapping": ["C", "S", "I", "D"]}, {"n": 13, "options": ["Я скорее проверяю и уточняю, чем начинаю без деталей.", "Я скорее обсуждаю и вовлекаю, чем действую в одиночку.", "Я скорее действую, чем долго обсуждаю.", "Я скорее выжидаю и наблюдаю, чем тороплюсь."], "mapping": ["C", "I", "D", "S"]}, {"n": 14, "options": ["В обучении продукта мне важны последовательность и поддержка.", "В обучении продукта мне важны доказательства и источники.", "В обучении продукта мне важна подача и история, которую можно рассказать.", "В обучении продукта мне важны практические рычаги применения."], "mapping": ["S", "C", "I", "D"]}, {"n": 15, "options": ["Если врач занят, я коротко и по сути добиваюсь окна.", "Если врач занят, я быстро устанавливаю контакт и нахожу «зацепку».", "Если врач занят, я уточню формат и договорюсь о точном времени.", "Если врач занят, я спокойно подожду и подстроюсь под график."], "mapping": ["D", "I", "C", "S"]}, {"n": 16, "options": ["Мне проще улучшать качество и стандарты.", "Мне проще лидировать и задавать направление.", "Мне проще поддерживать и «держать тыл».", "Мне проще объединять людей и создавать настроение."], "mapping": ["C", "D", "S", "I"]}, {"n": 17, "options": ["В конфликте я предпочитаю сохранить лица и отношения.", "В конфликте я предпочитаю разложить ситуацию по фактам.", "В конфликте я предпочитаю успокоить стороны и снизить напряжение.", "В конфликте я предпочитаю быстро закрыть вопрос."], "mapping": ["I", "C", "S", "D"]}, {"n": 18, "options": ["Я охотно пробую новое, если это вдохновляет.", "Я принимаю новое, когда понятно, как это работает.", "Я нормально отношусь к риску, если есть выгода.", "Я осторожен(на) и предпочитаю проверенное."], "mapping": ["I", "C", "D", "S"]}, {"n": 19, "options": ["Для меня важна корректность и соблюдение стандартов.", "Для меня важны доверие и стабильные отношения с ЛПР.", "Для меня важна репутация и то, как меня воспринимают.", "КПЭ и цифры для меня — главный ориентир."], "mapping": ["C", "S", "I", "D"]}, {"n": 20, "options": ["В переписке пишу коротко и требую конкретики.", "В переписке могу добавить эмоцию, чтобы «оживить» контакт.", "В переписке стараюсь быть мягким(ой) и поддерживающим(ей).", "В переписке тщательно формулирую и проверяю."], "mapping": ["D", "I", "S", "C"]}, {"n": 21, "options": ["Если вижу шанс, действую сразу, не откладывая.", "Если вижу шанс, проверяю, как это скажется на текущих договорённостях.", "Если вижу шанс, оцениваю риски и условия.", "Если вижу шанс, сначала заряжаю людей идеей."], "mapping": ["D", "S", "C", "I"]}, {"n": 22, "options": ["У меня высокий темп и я не люблю «тянуть».", "Мне нравится порядок и логика.", "Мне нравится размеренность и предсказуемость.", "Мне нравится динамика и много общения."], "mapping": ["D", "C", "S", "I"]}, {"n": 23, "options": ["При подготовке к визиту думаю: как быстро расположить к себе.", "При подготовке к визиту думаю: какие данные и материалы понадобятся.", "При подготовке к визиту думаю: как поддержать долгосрочное доверие.", "При подготовке к визиту думаю: какой результат я хочу получить."], "mapping": ["I", "C", "S", "D"]}, {"n": 24, "options": ["После визита думаю, как лучше сопровождать и не потерять связь.", "После визита проверяю, всё ли корректно и что улучшить в процессе.", "После визита фиксирую действия и сразу ставлю следующий шаг.", "После визита отмечаю, что сработало в контакте и эмоциях."], "mapping": ["S", "C", "D", "I"]}];
+  const TIPS = {"D": {"title": "D — Доминирование", "bullets": ["В визите: быстро к сути, фокус на цели/следующем шаге, уверенно работаете с возражениями.", "Сильные стороны: решительность, темп, умение договариваться про конкретику.", "Риски: можете «давить» и недослушивать; важно оставлять место вопросам врача.", "Полезная привычка: задавать 2–3 уточняющих вопроса перед предложением решения."]}, "I": {"title": "I — Влияние", "bullets": ["В визите: контакт, лёгкость, умение вовлечь, хорошо заходят истории/кейсы.", "Сильные стороны: отношения, презентация, мотивация, расширение сети контактов.", "Риски: можно уйти в разговор и потерять структуру/факты; держите «якоря».", "Полезная привычка: завершать визит конкретным договорённым действием и сроком."]}, "S": {"title": "S — Стабильность", "bullets": ["В визите: спокойный темп, доверие, внимательное сопровождение, сильны в долгих циклах.", "Сильные стороны: надёжность, сервисность, удержание ЛПР, качественное сопровождение.", "Риски: сложнее продавливать решения и быстро менять план; тренируйте жёсткость в рамках уважения.", "Полезная привычка: заранее готовить 1–2 «жёстких» формулировки для запроса следующего шага."]}, "C": {"title": "C — Точность", "bullets": ["В визите: факты, исследования, корректность формулировок, выстраивание логики.", "Сильные стороны: доказательная база, качество материалов, аккуратность с регламентами.", "Риски: можно затянуть подготовку и быть слишком осторожным(ой); тренируйте «достаточно хорошо».", "Полезная привычка: лимитировать подготовку по времени и заранее выбрать ключевой месседж."]}};
 
-const STYLES = ["D","I","S","C"];
-const STYLE_NAMES = {
-  D: "D — Dominance",
-  I: "I — Influence",
-  S: "S — Steadiness",
-  C: "C — Conscientiousness"
-};
+  const STYLES = ["D","I","S","C"];
+  const STYLE_FULL = {
+    D: "D — Dominance / Доминирование",
+    I: "I — Influence / Влияние",
+    S: "S — Steadiness / Стабильность",
+    C: "C — Conscientiousness / Точность"
+  };
 
-// Tips tailored for med reps (short, practical)
-const STYLE_TIPS = {
-  D: {
-    title: "D (Dominance) — быстро к цели",
-    bullets: [
-      "Визит: начинай с цели и предлагаемого решения, но заранее согласуй рамку и время.",
-      "Вопросы: короткие, конкретные; добивайся ясного Next Step.",
-      "Риск: давление/спешка → компенсируй паузами и проверкой понимания врача.",
-      "Сильная сторона: продавливает движение и закрывает договорённости."
-    ]
-  },
-  I: {
-    title: "I (Influence) — контакт и вовлечение",
-    bullets: [
-      "Визит: быстро создаёшь доверие; используй это, чтобы вовлекать в клинический смысл, а не “разговор ради разговора”.",
-      "Презентация: больше сторителлинга/кейсов, но держи структуру и факты.",
-      "Риск: уводит в эмоции/лишние обещания → фиксируй договорённости письменно.",
-      "Сильная сторона: строит отношения и повышает готовность слушать."
-    ]
-  },
-  S: {
-    title: "S (Steadiness) — стабильность и поддержка",
-    bullets: [
-      "Визит: спокойно выясняешь потребность; хорошо работает с длительными отношениями и повторными визитами.",
-      "Вопросы: мягко, глубоко; помогай врачу “развернуть” ситуацию.",
-      "Риск: избегание конфликта/сложных тем → тренируй прямое проговаривание условий и запросов.",
-      "Сильная сторона: надёжность, регулярность, качественный follow-up."
-    ]
-  },
-  C: {
-    title: "C (Conscientiousness) — точность и доказательность",
-    bullets: [
-      "Визит: опора на данные, протоколы, исследования; идеально для научной дискуссии.",
-      "Презентация: структурируй аргументы, показывай источники и ограничения.",
-      "Риск: перегруз деталями/затягивание → в конце всегда делай 2–3 ключевых вывода и Next Step.",
-      "Сильная сторона: доверие через качество и доказательность."
-    ]
-  }
-};
+  const blocksRoot = document.getElementById('blocks');
+  const answeredEl = document.getElementById('answered');
+  const progFill = document.getElementById('progFill');
+  const btnCalc = document.getElementById('btnCalc');
+  const btnReset = document.getElementById('btnReset');
+  const toastEl = document.getElementById('toast');
 
-// --- Test blocks: 24 blocks, each option mapped to a style. ---
-// mapping = [styleForOption1, styleForOption2, styleForOption3, styleForOption4]
-const BLOCKS = [
-  {
-    mapping:["S","I","C","D"],
-    options:[
-      "Сначала выясняю потребности и внимательно слушаю.",
-      "Легко завожу разговор и создаю тёплую атмосферу.",
-      "Опираюсь на данные и заранее продумываю детали.",
-      "Быстро обозначаю цель визита и веду разговор к решению."
-    ]
-  },
-  {
-    mapping:["D","C","I","S"],
-    options:[
-      "Люблю ставить чёткие цели и быстро двигаться к результату.",
-      "Стараюсь избегать ошибок: проверяю факты и формулировки.",
-      "Легко вовлекаю собеседника и поддерживаю энергию разговора.",
-      "Предпочитаю работать стабильно и последовательно, без резких рывков."
-    ]
-  },
-  {
-    mapping:["C","S","D","I"],
-    options:[
-      "Сначала уточняю критерии и стандарты, чтобы всё было корректно.",
-      "Сохраняю спокойствие и поддерживаю устойчивый темп общения.",
-      "Готов(а) отстаивать позицию и продавливать решение при необходимости.",
-      "Умею вдохновлять и “зажигать” интерес к теме."
-    ]
-  },
-  {
-    mapping:["I","D","S","C"],
-    options:[
-      "Мне важно, чтобы общение было живым и позитивным.",
-      "Я предпочитаю прямоту и быстрое принятие решений.",
-      "Я терпеливо веду диалог, чтобы всем было комфортно.",
-      "Я тщательно подбираю слова и структуру, чтобы не было неточностей."
-    ]
-  },
-  {
-    mapping:["S","C","I","D"],
-    options:[
-      "Часто беру на себя follow-up и довожу договорённости до конца.",
-      "Всегда держу в голове детали и риски, чтобы ничего не упустить.",
-      "Легко нахожу подход к разным типам людей.",
-      "Чётко формулирую, что нужно сделать и к какому сроку."
-    ]
-  },
-  {
-    mapping:["D","I","C","S"],
-    options:[
-      "Не люблю затягивать — лучше сделать и скорректировать по ходу.",
-      "Мне важна поддержка отношений и доверие.",
-      "Мне важны доказательства и точность формулировок.",
-      "Мне важны стабильные правила игры и предсказуемость."
-    ]
-  },
-  {
-    mapping:["C","D","S","I"],
-    options:[
-      "Предпочитаю готовиться заранее и иметь план разговора.",
-      "Если вижу возможность — беру инициативу и веду процесс.",
-      "Стараюсь учитывать темп и нагрузку собеседника.",
-      "Часто использую примеры/истории, чтобы было интереснее."
-    ]
-  },
-  {
-    mapping:["I","S","D","C"],
-    options:[
-      "Легко начинаю разговор даже с “холодного” контакта.",
-      "Мне комфортно работать в устойчивом режиме без резких изменений.",
-      "Я быстро принимаю решения и не боюсь ответственности.",
-      "Я замечаю несостыковки и люблю наводить порядок в информации."
-    ]
-  },
-  {
-    mapping:["S","D","C","I"],
-    options:[
-      "Сначала стараюсь понять мотивацию и контекст человека.",
-      "Сразу определяю приоритет и фокус на результате.",
-      "Уточняю детали и формулировки, чтобы избежать ошибок.",
-      "Быстро поднимаю настроение и создаю контакт."
-    ]
-  },
-  {
-    mapping:["D","C","I","S"],
-    options:[
-      "Легко говорю “давайте так” и двигаю процесс.",
-      "Предпочитаю осторожность и проверку перед действием.",
-      "Часто убеждаю через эмоцию/энергию и вовлечение.",
-      "Часто убеждаю через спокойствие, уважение и терпение."
-    ]
-  },
-  {
-    mapping:["C","I","S","D"],
-    options:[
-      "Для меня важно соответствовать стандартам и регламентам.",
-      "Мне важно, чтобы меня слушали и был отклик.",
-      "Мне важно, чтобы всем было комфортно и без напряжения.",
-      "Мне важно, чтобы было движение и конкретный результат."
-    ]
-  },
-  {
-    mapping:["I","D","C","S"],
-    options:[
-      "Легко подстраиваю стиль общения под собеседника.",
-      "Я предпочитаю влиять на ход встречи и управлять временем.",
-      "Я предпочитаю точность и аккуратность в аргументации.",
-      "Я предпочитаю поддерживать устойчивость и долгосрочность отношений."
-    ]
-  },
-  {
-    mapping:["S","C","D","I"],
-    options:[
-      "Мне комфортно быть “опорой” и поддерживать процесс.",
-      "Я часто выступаю “контролёром качества” — проверяю корректность.",
-      "Я часто выступаю “двигателем” — ускоряю решения.",
-      "Я часто выступаю “коммуникатором” — связываю людей."
-    ]
-  },
-  {
-    mapping:["D","S","I","C"],
-    options:[
-      "Если надо — могу быть жёстким(ой) в переговорах.",
-      "Я предпочитаю компромисс и спокойное решение.",
-      "Мне нравится, когда есть драйв и хорошая атмосфера.",
-      "Мне важно, чтобы всё было логично и доказательно."
-    ]
-  },
-  {
-    mapping:["C","S","I","D"],
-    options:[
-      "Сильнее всего ценю корректность и качество информации.",
-      "Сильнее всего ценю надёжность и стабильность.",
-      "Сильнее всего ценю контакт и вовлечённость.",
-      "Сильнее всего ценю скорость и результат."
-    ]
-  },
-  {
-    mapping:["I","C","D","S"],
-    options:[
-      "Легко выступаю и презентую, мне это нравится.",
-      "Мне проще писать/готовить материалы, чем импровизировать.",
-      "Мне легче “нажать”, чем долго уговаривать.",
-      "Мне легче “дожать” через терпение и регулярность."
-    ]
-  },
-  {
-    mapping:["S","D","C","I"],
-    options:[
-      "Когда напряжение растёт — я стараюсь сгладить и сохранить контакт.",
-      "Когда напряжение растёт — я беру контроль и веду к решению.",
-      "Когда напряжение растёт — я ухожу в факты и уточнения.",
-      "Когда напряжение растёт — я добавляю лёгкость и позитив."
-    ]
-  },
-  {
-    mapping:["D","I","S","C"],
-    options:[
-      "Я предпочитаю быстрые решения даже при неполной информации.",
-      "Я предпочитаю обсуждение и вовлечение людей.",
-      "Я предпочитаю последовательность и постепенные изменения.",
-      "Я предпочитаю полную ясность и доказательства перед решением."
-    ]
-  },
-  {
-    mapping:["C","D","I","S"],
-    options:[
-      "Меня раздражает неточность и “вода”.",
-      "Меня раздражает медлительность и отсутствие решения.",
-      "Меня раздражает холодность и отсутствие контакта.",
-      "Меня раздражают резкие конфликты и давление."
-    ]
-  },
-  {
-    mapping:["I","S","C","D"],
-    options:[
-      "Сильнее всего мне удаётся заинтересовать собеседника.",
-      "Сильнее всего мне удаётся выстроить доверие надолго.",
-      "Сильнее всего мне удаётся доказать и обосновать.",
-      "Сильнее всего мне удаётся добиться договорённости."
-    ]
-  },
-  {
-    mapping:["S","C","D","I"],
-    options:[
-      "Важнее всего — быть полезным и поддерживающим.",
-      "Важнее всего — быть точным и корректным.",
-      "Важнее всего — быть результативным и решительным.",
-      "Важнее всего — быть убедительным и вдохновляющим."
-    ]
-  },
-  {
-    mapping:["D","I","C","S"],
-    options:[
-      "Если вижу цель — мне проще идти напрямую.",
-      "Если вижу человека — мне проще сначала выстроить контакт.",
-      "Если вижу риск — мне проще сначала всё проверить.",
-      "Если вижу напряжение — мне проще сначала стабилизировать."
-    ]
-  },
-  {
-    mapping:["C","S","I","D"],
-    options:[
-      "На встрече я чаще держу структуру и логику.",
-      "На встрече я чаще держу спокойный темп и поддержку.",
-      "На встрече я чаще держу энергию и вовлечение.",
-      "На встрече я чаще держу фокус на решении и следующем шаге."
-    ]
-  },
-  {
-    mapping:["I","D","S","C"],
-    options:[
-      "Мне легче импровизировать и подхватывать идеи в моменте.",
-      "Мне легче вести к конкретному результату, чем “обсуждать бесконечно”.",
-      "Мне легче сохранять стабильность и регулярность, чем “скакать”.",
-      "Мне легче делать идеально, чем быстро."
-    ]
-  }
-];
-
-// --- UI build ---
-const blocksRoot = document.getElementById("blocks");
-const answeredEl = document.getElementById("answered");
-const progFill = document.getElementById("progFill");
-const btnCalc = document.getElementById("btnCalc");
-const btnReset = document.getElementById("btnReset");
-
-const toastEl = document.getElementById("toast");
-function toast(msg){
-  toastEl.textContent = msg;
-  toastEl.style.display = "block";
-  clearTimeout(toastEl._t);
-  toastEl._t = setTimeout(()=> toastEl.style.display="none", 2600);
-}
-
-function build(){
-  blocksRoot.innerHTML = "";
-  BLOCKS.forEach((b, idx)=>{
-    const n = idx+1;
-    const wrap = document.createElement("div");
-    wrap.className = "block";
-    wrap.dataset.block = String(idx);
-
-    wrap.innerHTML = `
-      <div class="blockTop">
-        <div>
-          <div class="bTitle">Блок ${n}</div>
-          <div class="bMap">Вариант 1→${b.mapping[0]} • 2→${b.mapping[1]} • 3→${b.mapping[2]} • 4→${b.mapping[3]}</div>
-        </div>
-        <div class="controls">
-          <label>
-            <div style="font-size:11px;color:var(--muted);margin:0 0 4px;text-transform:uppercase;letter-spacing:.6px">MOST</div>
-            <select class="sel most">
-              <option value="">— выбери —</option>
-              <option value="1">Вариант 1</option>
-              <option value="2">Вариант 2</option>
-              <option value="3">Вариант 3</option>
-              <option value="4">Вариант 4</option>
-            </select>
-          </label>
-          <label>
-            <div style="font-size:11px;color:var(--muted);margin:0 0 4px;text-transform:uppercase;letter-spacing:.6px">LEAST</div>
-            <select class="sel least">
-              <option value="">— выбери —</option>
-              <option value="1">Вариант 1</option>
-              <option value="2">Вариант 2</option>
-              <option value="3">Вариант 3</option>
-              <option value="4">Вариант 4</option>
-            </select>
-          </label>
-        </div>
-      </div>
-
-      <table>
-        <thead>
-          <tr>
-            <th style="width:64px">№</th>
-            <th>Фраза</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${b.options.map((t,i)=>`
-            <tr>
-              <td style="font-family:var(--mono); font-weight:900">${i+1}</td>
-              <td class="opt">${escapeHtml(t)}</td>
-            </tr>
-          `).join("")}
-        </tbody>
-      </table>
-
-      <div class="err">В этом блоке MOST и LEAST должны быть разными вариантами.</div>
-    `;
-
-    blocksRoot.appendChild(wrap);
-
-    const most = wrap.querySelector("select.most");
-    const least = wrap.querySelector("select.least");
-    most.addEventListener("change", ()=> onChange(idx));
-    least.addEventListener("change", ()=> onChange(idx));
-  });
-
-  updateProgress();
-  renderScoreRows({D:0,I:0,S:0,C:0},{D:0,I:0,S:0,C:0},{D:0,I:0,S:0,C:0});
-}
-function escapeHtml(s){
-  return s.replace(/[&<>"']/g, (m)=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-  }[m]));
-}
-
-function onChange(idx){
-  const node = document.querySelector(`.block[data-block="${idx}"]`);
-  const most = node.querySelector("select.most").value;
-  const least = node.querySelector("select.least").value;
-
-  const err = node.querySelector(".err");
-  const isBad = most && least && most === least;
-  err.style.display = isBad ? "block" : "none";
-
-  // If user picked same, auto-clear LEAST to make it dummy-proof
-  if(isBad){
-    node.querySelector("select.least").value = "";
-    toast("MOST и LEAST должны быть разными — LEAST очищен.");
+  function toast(msg){
+    toastEl.textContent = msg;
+    toastEl.style.display = 'block';
+    clearTimeout(toastEl._t);
+    toastEl._t = setTimeout(()=>toastEl.style.display='none', 2600);
   }
 
-  updateProgress();
-}
-
-function updateProgress(){
-  let ok = 0;
-  for(let i=0;i<BLOCKS.length;i++){
-    const node = document.querySelector(`.block[data-block="${i}"]`);
-    const most = node.querySelector("select.most").value;
-    const least = node.querySelector("select.least").value;
-    if(most && least && most !== least) ok++;
-  }
-  answeredEl.textContent = ok;
-  const pct = Math.round((ok / BLOCKS.length) * 100);
-  progFill.style.width = pct + "%";
-  btnCalc.disabled = ok !== BLOCKS.length;
-}
-
-function readAnswers(){
-  const answers = [];
-  for(let i=0;i<BLOCKS.length;i++){
-    const node = document.querySelector(`.block[data-block="${i}"]`);
-    const most = node.querySelector("select.most").value;
-    const least = node.querySelector("select.least").value;
-    answers.push({most, least});
-  }
-  return answers;
-}
-
-function score(){
-  const mostCount = {D:0,I:0,S:0,C:0};
-  const leastCount = {D:0,I:0,S:0,C:0};
-
-  for(let i=0;i<BLOCKS.length;i++){
-    const b = BLOCKS[i];
-    const node = document.querySelector(`.block[data-block="${i}"]`);
-    const most = node.querySelector("select.most").value;
-    const least = node.querySelector("select.least").value;
-
-    if(!most || !least || most === least){
-      return null;
+  function renderInstructions(){
+    // Берём строки из Excel-листа «Инструкция» и форматируем кратко
+    const lines = INSTRUCTIONS.filter(x => x && typeof x === 'string');
+    // Оставим только содержательные строки, без заголовка
+    const cleaned = [];
+    for (const s of lines){
+      if (s.startsWith('DISC ')) continue;
+      if (s === 'Как проходить') continue;
+      cleaned.push(s);
     }
-    const mStyle = b.mapping[Number(most)-1];
-    const lStyle = b.mapping[Number(least)-1];
-    mostCount[mStyle] += 1;
-    leastCount[lStyle] += 1;
+    const html = cleaned.map(s => `<div>${escapeHtml(s)}</div>`).join('');
+    document.getElementById('instructions').innerHTML = html;
   }
 
-  const net = {D:0,I:0,S:0,C:0};
-  for(const k of STYLES){
-    net[k] = mostCount[k] - leastCount[k];
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, (m)=>({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
+    }[m]));
   }
-  return {mostCount, leastCount, net};
-}
 
-function renderScoreRows(mostCount, leastCount, net){
-  const wrap = document.getElementById("scoreRows");
-  wrap.innerHTML = "";
+  function build(){
+    blocksRoot.innerHTML = '';
+    BLOCKS.forEach((b, idx)=>{
+      const wrap = document.createElement('div');
+      wrap.className = 'block';
+      wrap.dataset.block = String(idx);
 
-  // scale meters by possible range: net in [-24..+24]
-  const maxAbs = 24;
-  const toPct = (v) => Math.round(((v + maxAbs) / (2*maxAbs)) * 100);
-
-  const order = STYLES.map(k=>({k, v: net[k]})).sort((a,b)=>b.v-a.v);
-
-  order.forEach(({k, v})=>{
-    const row = document.createElement("div");
-    row.className = "scoreRow";
-    row.innerHTML = `
-      <div class="k">${k}</div>
-      <div>
-        <div class="meter" title="NET">
-          <div style="width:${toPct(v)}%; background: linear-gradient(90deg, var(--primary), var(--primary2));"></div>
+      wrap.innerHTML = `
+        <div class="blockTop">
+          <div>
+            <div class="bTitle">Блок ${b.n}</div>
+          </div>
+          <div class="controls">
+            <label>
+              <div style="font-size:11px;color:var(--muted);margin:0 0 4px;text-transform:uppercase;letter-spacing:.6px">MOST</div>
+              <select class="sel most">
+                <option value="">— выбери —</option>
+                <option value="1">Вариант 1</option>
+                <option value="2">Вариант 2</option>
+                <option value="3">Вариант 3</option>
+                <option value="4">Вариант 4</option>
+              </select>
+            </label>
+            <label>
+              <div style="font-size:11px;color:var(--muted);margin:0 0 4px;text-transform:uppercase;letter-spacing:.6px">LEAST</div>
+              <select class="sel least">
+                <option value="">— выбери —</option>
+                <option value="1">Вариант 1</option>
+                <option value="2">Вариант 2</option>
+                <option value="3">Вариант 3</option>
+                <option value="4">Вариант 4</option>
+              </select>
+            </label>
+          </div>
         </div>
-        <div style="display:flex; justify-content:space-between; gap:10px; margin-top:6px; font-size:12px; color:var(--muted)">
-          <div>MOST: <b style="font-family:var(--mono)">${mostCount[k]}</b></div>
-          <div>LEAST: <b style="font-family:var(--mono)">${leastCount[k]}</b></div>
+
+        <table>
+          <thead>
+            <tr>
+              <th style="width:64px">№</th>
+              <th>Фраза</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${b.options.map((t,i)=>`<tr><td style="font-family:var(--mono);font-weight:900">${i+1}</td><td class="opt">${escapeHtml(t)}</td></tr>`).join("")}
+          </tbody>
+        </table>
+
+        <div class="err">В этом блоке MOST и LEAST должны быть разными вариантами.</div>
+      `;
+
+      blocksRoot.appendChild(wrap);
+      const most = wrap.querySelector('select.most');
+      const least = wrap.querySelector('select.least');
+      most.addEventListener('change', ()=> onChange(idx));
+      least.addEventListener('change', ()=> onChange(idx));
+    });
+
+    updateProgress();
+    renderScoreRows({D:0,I:0,S:0,C:0}, {D:0,I:0,S:0,C:0}, {D:0,I:0,S:0,C:0});
+    renderInstructions();
+  }
+
+  function onChange(idx){
+    const node = document.querySelector(`.block[data-block="${idx}"]`);
+    const most = node.querySelector('select.most').value;
+    const least = node.querySelector('select.least').value;
+    const err = node.querySelector('.err');
+
+    const isBad = most && least && most === least;
+    err.style.display = isBad ? 'block' : 'none';
+
+    // Дуракаустойчиво: если выбрал одинаково — очищаем LEAST
+    if (isBad){
+      node.querySelector('select.least').value = '';
+      err.style.display = 'none';
+      toast('MOST и LEAST должны быть разными — LEAST очищен.');
+    }
+
+    updateProgress();
+  }
+
+  function updateProgress(){
+    let ok = 0;
+    for (let i=0;i<BLOCKS.length;i++){
+      const node = document.querySelector(`.block[data-block="${i}"]`);
+      const most = node.querySelector('select.most').value;
+      const least = node.querySelector('select.least').value;
+      if (most && least && most !== least) ok++;
+    }
+    answeredEl.textContent = ok;
+    const pct = Math.round((ok / BLOCKS.length) * 100);
+    progFill.style.width = pct + '%';
+    btnCalc.disabled = ok !== BLOCKS.length;
+  }
+
+  function score(){
+    const mostCount = {D:0,I:0,S:0,C:0};
+    const leastCount = {D:0,I:0,S:0,C:0};
+
+    for (let i=0;i<BLOCKS.length;i++){
+      const b = BLOCKS[i];
+      const node = document.querySelector(`.block[data-block="${i}"]`);
+      const most = node.querySelector('select.most').value;
+      const least = node.querySelector('select.least').value;
+      if (!most || !least || most === least) return null;
+
+      const mStyle = b.mapping[Number(most)-1];
+      const lStyle = b.mapping[Number(least)-1];
+      mostCount[mStyle] += 1;
+      leastCount[lStyle] += 1;
+    }
+
+    const net = {D:0,I:0,S:0,C:0};
+    for (const k of STYLES) net[k] = mostCount[k] - leastCount[k];
+
+    return { mostCount, leastCount, net };
+  }
+
+  function renderScoreRows(mostCount, leastCount, net){
+    const wrap = document.getElementById('scoreRows');
+    wrap.innerHTML = '';
+
+    // net range: [-24..+24]
+    const maxAbs = 24;
+    const toPct = (v) => Math.round(((v + maxAbs) / (2*maxAbs)) * 100);
+
+    const order = STYLES.map(k => ({k, v: net[k]})).sort((a,b)=>b.v-a.v);
+
+    order.forEach(({k, v})=>{
+      const row = document.createElement('div');
+      row.className = 'scoreRow';
+      row.innerHTML = `
+        <div class="k">${k}</div>
+        <div>
+          <div class="meter"><div style="width:${toPct(v)}%"></div></div>
+          <div style="display:flex; justify-content:space-between; gap:10px; margin-top:6px; font-size:12px; color:var(--muted)">
+            <div>MOST: <b style="font-family:var(--mono)">${mostCount[k]}</b></div>
+            <div>LEAST: <b style="font-family:var(--mono)">${leastCount[k]}</b></div>
+          </div>
         </div>
-      </div>
-      <div class="v">${v>=0?"+":""}${v}</div>
-    `;
-    wrap.appendChild(row);
-  });
+        <div class="v">${v>=0?"+":""}${v}</div>
+      `;
+      wrap.appendChild(row);
+    });
 
-  // lead label
-  const lead = order[0]?.k || "—";
-  const second = order[1]?.k || "—";
-  document.getElementById("leadBadge").textContent = lead;
-  document.getElementById("leadText").textContent = lead === "—"
-    ? "—"
-    : `Лидирующий стиль: ${STYLE_NAMES[lead]}`;
+    const lead = order[0]?.k || '—';
+    const second = order[1]?.k || '—';
 
-  // mixed note
-  const diff = (order[0] && order[1]) ? (order[0].v - order[1].v) : null;
-  const mixNote = document.getElementById("mixNote");
-  if(diff === null){
-    mixNote.textContent = "";
-  } else if(diff <= 2){
-    mixNote.textContent = `Похоже на смешанный профиль: ${lead}/${second} (разница NET = ${diff}). Это нормально для роли медпреда.`;
-  } else {
-    mixNote.textContent = `Вторичный стиль: ${STYLE_NAMES[second]}. Разница NET = ${diff}.`;
+    document.getElementById('leadBadge').textContent = lead;
+    document.getElementById('leadText').textContent = lead === '—' ? '—' : `Основной стиль: ${STYLE_FULL[lead]}`;
+
+    const diff = (order[0] && order[1]) ? (order[0].v - order[1].v) : null;
+    const mixNote = document.getElementById('mixNote');
+    if (diff === null) mixNote.textContent = '';
+    else if (diff <= 2) mixNote.textContent = `Смешанный профиль: ${lead}/${second} (разница NET = ${diff}).`;
+    else mixNote.textContent = `Вторичный стиль: ${STYLE_FULL[second]}. Разница NET = ${diff}.`;
+
+    // tips
+    const tipsBox = document.getElementById('visitTips');
+    if (lead === '—' || !TIPS[lead]){
+      tipsBox.innerHTML = '<span style="color:var(--muted)">Заполни тест — и здесь появятся рекомендации.</span>';
+    } else {
+      const t = TIPS[lead];
+      tipsBox.innerHTML = `
+        <div style="font-weight:900; margin-bottom:6px">${escapeHtml(t.title)}</div>
+        <ul class="list">
+          ${(t.bullets||[]).map(x=>`<li>${escapeHtml(x)}</li>`).join("")}
+        </ul>
+      `;
+    }
   }
 
-  // visit tips
-  const tips = document.getElementById("visitTips");
-  if(lead === "—"){
-    tips.innerHTML = `<span class="muted">Заполни тест — и здесь появятся рекомендации.</span>`;
-  } else {
-    const t = STYLE_TIPS[lead];
-    tips.innerHTML = `
-      <div style="font-weight:900; margin-bottom:6px">${t.title}</div>
-      <ul class="list">
-        ${t.bullets.map(x=>`<li>${escapeHtml(x)}</li>`).join("")}
-      </ul>
-      <div class="hint muted" style="margin-top:8px">
-        Хочешь точнее? Укажи контекст (стационар/поликлиника/аптека, KOL/не-KOL) — можно сделать отдельную интерпретацию под сегменты.
-      </div>
-    `;
+  function calcAndShow(){
+    const r = score();
+    if (!r){ toast('Заполни все блоки: MOST и LEAST должны быть выбраны и различаться.'); return; }
+    renderScoreRows(r.mostCount, r.leastCount, r.net);
+    document.getElementById('resultCard').scrollIntoView({behavior:'smooth', block:'start'});
   }
-}
 
-function calcAndShow(){
-  const r = score();
-  if(!r){
-    toast("Заполни все блоки: MOST и LEAST должны быть выбраны и различаться.");
-    return;
+  function resetAll(){
+    document.querySelectorAll('select.sel').forEach(s => s.value = '');
+    document.querySelectorAll('.err').forEach(e => e.style.display = 'none');
+    updateProgress();
+    renderScoreRows({D:0,I:0,S:0,C:0}, {D:0,I:0,S:0,C:0}, {D:0,I:0,S:0,C:0});
+    toast('Сброшено.');
+    window.scrollTo({top:0, behavior:'smooth'});
   }
-  renderScoreRows(r.mostCount, r.leastCount, r.net);
-  document.getElementById("resultCard").scrollIntoView({behavior:"smooth", block:"start"});
-}
 
-function resetAll(){
-  document.querySelectorAll("select.sel").forEach(s=> s.value = "");
-  document.querySelectorAll(".err").forEach(e=> e.style.display="none");
-  updateProgress();
-  renderScoreRows({D:0,I:0,S:0,C:0},{D:0,I:0,S:0,C:0},{D:0,I:0,S:0,C:0});
-  toast("Сброшено.");
-  window.scrollTo({top:0, behavior:"smooth"});
-}
+  btnCalc.addEventListener('click', calcAndShow);
+  btnReset.addEventListener('click', resetAll);
 
-btnCalc.addEventListener("click", calcAndShow);
-btnReset.addEventListener("click", resetAll);
-
-build();
+  build();
 </script>
 </body>
 </html>
