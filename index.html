@@ -6,15 +6,26 @@
   <title>DISC — тест для медпредов</title>
   <style>
     :root{
-      /* При наличии точных HEX из брендгайда Sandoz — подставь здесь */
-      --bg:#f6f8fb;
+      /* Sandoz brand palette */
+      --darkblue:#001C4A;
+      --sandoz:#1C59B5;
+      --medblue:#5DA6FF;
+      --lightblue:#A8D5FF;
+      --sand:#F1ECE9;
+      --stone:#D6C6B6;
+      --taupe:#A39F8B;
+      --orange:#FC522D;
+      --teal:#006B76;
+      --mustard:#D5862C;
+
+      --bg:#F1ECE9;
       --card:#ffffff;
-      --text:#0b1220;
+      --text:#001C4A;
       --muted:#5b667a;
-      --line:#e3e8f2;
-      --primary:#0057B8;
-      --primary2:#00A3E0;
-      --shadow: 0 10px 25px rgba(11,18,32,.08);
+      --line:#e0dcd6;
+      --primary:#1C59B5;
+      --primary2:#5DA6FF;
+      --shadow: 0 10px 25px rgba(0,28,74,.10);
       --radius: 16px;
       --radius2: 22px;
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -27,8 +38,8 @@
       font-family:var(--sans);
       color:var(--text);
       background:
-        radial-gradient(1200px 600px at 15% -10%, rgba(0,87,184,.12), transparent 55%),
-        radial-gradient(1200px 600px at 95% 0%, rgba(0,163,224,.10), transparent 55%),
+        radial-gradient(1200px 600px at 15% -10%, rgba(28,89,181,.12), transparent 55%),
+        radial-gradient(1200px 600px at 95% 0%, rgba(93,166,255,.12), transparent 55%),
         var(--bg);
     }
 
@@ -40,7 +51,7 @@
     .subtitle{margin:2px 0 0; color:var(--muted); font-size:13px; line-height:1.3;}
 
     .actions{display:flex; gap:10px; flex-wrap:wrap;}
-    button{border:0; border-radius:12px; padding:10px 12px; font-weight:800; cursor:pointer; background: var(--primary); color:white; box-shadow: 0 8px 18px rgba(0,87,184,.20);}
+    button{border:0; border-radius:12px; padding:10px 12px; font-weight:800; cursor:pointer; background: var(--primary); color:white; box-shadow: 0 8px 18px rgba(28,89,181,.22);}
     button.secondary{background:#fff; color:var(--text); border:1px solid var(--line); box-shadow:none;}
     button:disabled{opacity:.55; cursor:not-allowed;}
 
@@ -52,7 +63,7 @@
     .hint{color:var(--muted); font-size:13px; line-height:1.45;}
 
     .pillrow{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;}
-    .pill{font-size:12px; padding:6px 10px; border-radius:999px; background:#f1f5ff; border:1px solid #dbe6ff; color:#1b2d6b; font-weight:800;}
+    .pill{font-size:12px; padding:6px 10px; border-radius:999px; background:#EAF2FF; border:1px solid var(--lightblue); color:var(--darkblue); font-weight:800;}
 
     .testHeader{display:flex; align-items:flex-start; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:10px;}
     .progress{display:flex; align-items:center; gap:10px; color:var(--muted); font-size:13px;}
@@ -75,9 +86,9 @@
     .microhelp{margin-top:8px; font-size:12px; color:var(--muted);}
     .microhelp b{color:var(--text);}
 
-    .scoreCard{border:1px solid var(--line); border-radius: var(--radius); padding:12px; background: linear-gradient(180deg, rgba(0,87,184,.05), transparent 55%);}
+    .scoreCard{border:1px solid var(--line); border-radius: var(--radius); padding:12px; background: linear-gradient(180deg, rgba(28,89,181,.06), transparent 55%);}
     .resultTitle{display:flex; align-items:flex-start; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-top:6px;}
-    .badge{padding:6px 10px; border-radius:999px; font-weight:900; font-family:var(--mono); background:#f1f5ff; border:1px solid #dbe6ff; color:#1b2d6b; white-space:nowrap;}
+    .badge{padding:6px 10px; border-radius:999px; font-weight:900; font-family:var(--mono); background:#EAF2FF; border:1px solid var(--lightblue); color:var(--darkblue); white-space:nowrap;}
 
     .scoreRow{display:grid; grid-template-columns: 50px 1fr 70px; align-items:center; gap:10px; margin:10px 0;}
     .scoreRow .k{font-family:var(--mono); font-weight:900;}
@@ -95,6 +106,24 @@
     .toast{position:fixed; left:50%; transform:translateX(-50%); bottom:16px; background:#0b1220; color:#fff; padding:10px 12px; border-radius:999px; box-shadow:var(--shadow); font-size:13px; display:none; max-width:min(92vw, 560px);}
 
     .small{color:var(--muted); font-size:12px; line-height:1.45; margin-top:8px;}
+
+    /* Плавающая панель действий — всегда доступна, без прокрутки наверх */
+    .floatbar{
+      position:fixed; left:0; right:0; bottom:0; z-index:50;
+      display:flex; gap:10px; align-items:center; justify-content:center;
+      padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+      background:rgba(255,255,255,.92); backdrop-filter:saturate(1.2) blur(8px);
+      border-top:1px solid var(--line); box-shadow:0 -8px 24px rgba(0,28,74,.10);
+    }
+    .floatbar .fbInfo{font-size:12px; color:var(--muted); font-weight:800; margin-right:auto;}
+    .floatbar .fbInfo b{color:var(--darkblue); font-family:var(--mono);}
+    .floatbar button{padding:12px 16px; font-size:14px;}
+    .wrap{padding-bottom:96px;} /* место под плавающую панель */
+    @media (max-width:560px){
+      .floatbar{flex-wrap:wrap; gap:8px;}
+      .floatbar .fbInfo{width:100%; margin:0 0 2px;}
+      .floatbar button{flex:1; padding:12px 10px;}
+    }
   </style>
 </head>
 <body>
@@ -211,6 +240,13 @@
     </div>
   </div>
 
+  <div class="floatbar" id="floatbar">
+    <div class="fbInfo"><b id="fbAnswered">0</b>/24 заполнено</div>
+    <button class="secondary" id="btnResetFb" type="button">Сбросить</button>
+    <button id="btnCalcFb" type="button" disabled>Показать результат</button>
+    <button class="secondary" id="btnDownloadFb" type="button" disabled>PDF</button>
+  </div>
+
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -263,6 +299,92 @@
     }
   };
 
+  // ===== Развёрнутый контент отчёта для медпреда =====
+  const ANCHOR = {
+    D: "Цель. Аргумент. Шаг.",
+    I: "Зажёг — зафиксируй шаг.",
+    S: "Что делаем дальше?",
+    C: "Три факта, вывод, шаг."
+  };
+
+  const STRENGTHS = {
+    D: ["Держит цель визита и не растекается по темам.","Быстро доводит до next step и договорённости.","Не боится «трудных» врачей и отказов.","Эффективен на коротких визитах под давлением плана."],
+    I: ["Быстро строит доверие и получает доступ к врачу.","Удерживает внимание на презентации, хорош во вводе новинок.","Эмоционально «упаковывает» данные — врач слушает.","Легко восстанавливает подпорченные отношения."],
+    S: ["Выстраивает долгие лояльные отношения, врач считает «своим».","Надёжен в сопровождении и постоянном контакте.","Силён в длинных циклах формирования Rx-привычки.","Стабильный темп, не создаёт лишних рисков."],
+    C: ["Доказательная аргументация, свободно работает с данными и исследованиями.","Точен в комплаенсе и материалах.","Врач-скептик и KOL воспринимают всерьёз.","Не даёт ложных обещаний — высокое доверие к словам."]
+  };
+
+  const BLINDLOW = {
+    D: "Избегает прямого запроса на назначение, не дожимает — визиты приятные, но без результата.",
+    I: "Сухой контакт, врачу с ним не тепло; трудно с I-врачами и на вводе новинок.",
+    S: "Не сопровождает, теряет врача после первого назначения; слабое удержание Rx-привычки.",
+    C: "Слаб в данных, врач-скептик/KOL не воспринимает всерьёз; риск неточных обещаний."
+  };
+
+  const BLINDLEAD = {
+    D: "Может «продавливать» → врач соглашается на визите, но не меняет практику. Фикс: 2 уточняющих вопроса и пауза перед оффером.",
+    I: "Эмоции и обещания вместо фиксации; приятный разговор без клинического ядра и next step. Фикс: закрывать визит конкретным действием и сроком.",
+    S: "Избегает жёсткости, тянет с прямым запросом на назначение. Фикс: заранее заготовить 1 прямую фразу-просьбу о next step.",
+    C: "Перегружает врача данными, долго готовится, теряет темп на коротком визите. Фикс: правило «3 факта + 1 вывод + 1 шаг»."
+  };
+
+  const STRESS = {
+    D: "Давит, перебивает, превращает визит в соревнование → врач закрывается. Возврат: пауза и вопрос вместо оффера.",
+    I: "Много говорит, обещает лишнее, теряет структуру и next step. Возврат: вернуться к одному факту и зафиксировать шаг.",
+    S: "Замирает, уступает, уходит от прямого запроса, соглашается на «подумаю». Возврат: заготовленная прямая фраза-просьба.",
+    C: "Зарывается в детали, перегружает, тормозит решение. Возврат: правило «3 факта → вывод → шаг»."
+  };
+
+  const WITHDOCTOR = {
+    D: ["С S/C-врачом сознательно замедлись, дай данные и время.","С D-врачом — сразу суть, но не превращай в соревнование.","С I-врачом добавь минуту контакта: он хочет отношений, а не гонки к результату."],
+    I: ["С C-врачом (скептик, любит цифры) убери эмоции, дай исследование и источник.","С D-врачом сократи разговор: суть за 60 секунд.","С I- и S-врачами используй контакт, но всё равно закрывай next step."],
+    S: ["Твоя надёжность отлично заходит S/C-врачам.","С D-врачом добавь темпа и прямоты: он хочет быстрого решения.","С I-врачом подними тонус и вовлечение — он ждёт энергии."],
+    C: ["С C- и D-врачами твоя доказательность — сила.","С I-врачом добавь историю/кейс: сухие данные его теряют.","С S-врачом снизь давление фактами, добавь тепла и сопровождения."]
+  };
+
+  const WITHPHARM = {
+    D: "Быстро дай выгоду и аргумент рекомендации; дай готовый скрипт «что сказать покупателю», не грузи.",
+    I: "Твой контакт — сила у прилавка; эмоциональный аргумент + простой оффер по выкладке/акции.",
+    S: "Для постоянных аптек: стабильные визиты, надёжность поставки, уверенность в наличии и сервисе.",
+    C: "Первостольник ценит корректность (показания, взаимодействия, отпуск); дай точную короткую памятку без перегруза."
+  };
+
+  const PLAN30 = {
+    D: ["На каждом 3-м визите задай 3 вопроса до оффера.","В заметках после визита отмечай, где «дожал», но врач не поменял практику — разбирай эти случаи."],
+    I: ["Правило: визит не закрыт без записанного next step.","5 визитов подряд — фиксация конкретного действия и срока в блокноте."],
+    S: ["Отработать 3 прямые фразы-запроса на назначение.","Применить минимум на 10 визитах, в заметках отследить реакцию врача."],
+    C: ["Правило подготовки: максимум 3 ключевых факта.","На 10 визитах уложиться в 3 аргумента без перегруза, отметить результат."]
+  };
+
+  const RECOGNIZE = [
+    ["D","Торопит, перебивает, «что по сути?», смотрит на время","Дай суть и результат за 60 секунд"],
+    ["I","Общителен, отвлекается, любит истории и новизну","Дай эмоцию, контакт, кейс"],
+    ["S","Спокоен, осторожен, не любит давления, «как это скажется»","Дай надёжность, время, сопровождение"],
+    ["C","Точные вопросы, требует источники, недоверчив к обещаниям","Дай данные, исследование, корректность"]
+  ];
+
+  const COMBO = {
+    DI:"Обе шкалы быстрые → скорость + харизма, но обе не любят деталей. Рвётся вперёд и обещает — теряет точность и фиксацию шага.",
+    DC:"Результат тянет быстро, точность — медленно → внутренний тормоз. Сила: жёсткая доказательность. Риск: давление + перфекционизм.",
+    DS:"Напор и желание сохранить отношения конфликтуют → то дожимает, то отступает. Нужна ровность.",
+    ID:"Контакт ведёт, результат подгоняет → ярко и результативно, риск обещаний без фиксации.",
+    IS:"Обе про людей → максимум тепла и лояльности, но обе избегают прямого запроса. Слепая зона — дожим.",
+    IC:"Эмоция и точность спорят → то история, то данные. Сила — гибкая подача, риск — непоследовательность.",
+    SD:"Стабильность ведёт, давление прорывается → обычно мягкий, под стрессом резкий. Нужна предсказуемость.",
+    SI:"Тепло + контакт → «свой» врач, отличное удержание, но слабы дожим и темп.",
+    SC:"Надёжность + точность → доверенный аналитик, врач верит. Риск — медлит с решением и дожимом.",
+    CD:"Точность ведёт, результат подгоняет → доказательный и целеустремлённый, риск — жёсткость.",
+    CI:"Данные + подача → умеет упаковать доказательность, риск — распыление между фактами и эмоцией.",
+    CS:"Точность + сопровождение → аккуратный, надёжный, врач-скептик доверяет. Риск — пассивность, ждёт, не инициирует."
+  };
+
+  function intensityLabel(net, lead){
+    const v = net[lead];
+    if (v >= 5) return {tier:"Выраженный", text:"стиль доминирует, виден сразу. Сильные стороны и слепые зоны обострены, под другой стиль врача перестраивается с трудом."};
+    if (v >= 3) return {tier:"Умеренный", text:"стиль ведущий, но управляемый — можно осознанно подстроиться под собеседника."};
+    return {tier:"Сглаженный", text:"ведущий стиль выражен слабо, профиль близок к смешанному. Плюс — гибкость; минус — нет явной «фирменной» сильной стороны, легко теряется под нагрузкой."};
+  }
+
   const STYLES = ["D","I","S","C"];
   const STYLE_FULL = {
     D: "D — Dominance / Доминирование",
@@ -277,6 +399,10 @@
   const btnCalc = document.getElementById('btnCalc');
   const btnReset = document.getElementById('btnReset');
   const btnDownload = document.getElementById('btnDownload');
+  const btnCalcFb = document.getElementById('btnCalcFb');
+  const btnResetFb = document.getElementById('btnResetFb');
+  const btnDownloadFb = document.getElementById('btnDownloadFb');
+  const fbAnswered = document.getElementById('fbAnswered');
   const toastEl = document.getElementById('toast');
 
   let lastResult = null;
@@ -383,11 +509,16 @@
       if (most && least && most !== least) ok++;
     }
     answeredEl.textContent = ok;
+    fbAnswered.textContent = ok;
     const pct = Math.round((ok / BLOCKS.length) * 100);
     progFill.style.width = pct + '%';
 
-    btnCalc.disabled = ok !== BLOCKS.length;
-    btnDownload.disabled = !(ok === BLOCKS.length && lastResult);
+    const calcDisabled = ok !== BLOCKS.length;
+    const dlDisabled = !(ok === BLOCKS.length && lastResult);
+    btnCalc.disabled = calcDisabled;
+    btnCalcFb.disabled = calcDisabled;
+    btnDownload.disabled = dlDisabled;
+    btnDownloadFb.disabled = dlDisabled;
   }
 
   function score(){
@@ -510,85 +641,152 @@
     if (!r) r = score();
     if (!r){ toast('Сначала заполни все блоки и нажми «Показать результат».'); return; }
 
-    const tips = (r.lead && TIPS[r.lead]) ? TIPS[r.lead] : null;
+    const lead = r.lead, second = r.second;
+    const li = (arr)=> (arr||[]).map(x=>`<li>${escapeHtml(x)}</li>`).join('');
+    const intens = intensityLabel(r.net, lead);
+    const lowStyle = [...STYLES].sort((a,b)=> r.net[a]-r.net[b])[0];
 
-    const rows = STYLES.map(k=>`
-      <tr>
-        <td style="font-family: ui-monospace, Menlo, Consolas, monospace; font-weight:900;">${k}</td>
+    const scaleRows = STYLES.map(k=>{
+      const v = r.net[k];
+      const pct = Math.round(((v + 24) / 48) * 100);
+      return `<tr>
+        <td class="mono b">${k}</td>
+        <td>${escapeHtml(STYLE_FULL[k].split('/')[1].trim())}</td>
         <td>${r.mostCount[k]}</td>
         <td>${r.leastCount[k]}</td>
-        <td style="font-family: ui-monospace, Menlo, Consolas, monospace; font-weight:900;">${r.net[k]>=0?"+":""}${r.net[k]}</td>
-      </tr>
+        <td class="mono b">${v>=0?'+':''}${v}</td>
+      </tr>`;
+    }).join('');
+
+    const diffText = (r.diff===null) ? '' : (r.diff<=2
+      ? `Смешанный профиль <b>${lead}/${second}</b> (разница баланса = ${r.diff}). Оба стиля работают почти наравне.`
+      : `Вторичный стиль: <b>${escapeHtml(STYLE_FULL[second])}</b>. Разница баланса = ${r.diff}.`);
+
+    const comboKey = (lead && second) ? (lead+second) : '';
+    const comboText = COMBO[comboKey] || '';
+
+    const recognizeRows = RECOGNIZE.map(([k,sig,act])=>`
+      <tr><td class="mono b">${k}</td><td>${escapeHtml(sig)}</td><td>${escapeHtml(act)}</td></tr>
     `).join('');
-
-    const bullets = tips ? (tips.bullets||[]).map(x=>`<li>${escapeHtml(x)}</li>`).join('') : '';
-
-    const diffText = (r.diff===null) ? '' : (r.diff<=2 ? `Смешанный профиль: ${r.lead}/${r.second} (разница баланса = ${r.diff}).`
-                                                   : `Вторичный стиль: ${STYLE_FULL[r.second]}. Разница баланса = ${r.diff}.`);
 
     const html = `
 <!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>DISC_result_${getNowStamp()}</title>
+  <title>DISC_report_${getNowStamp()}</title>
   <style>
-    @page { size: A4; margin: 16mm; }
-    body{ font-family: Arial, system-ui, sans-serif; color:#0b1220; }
-    .head{display:flex; gap:12px; align-items:center; margin-bottom:10px;}
-    .logo{width:38px; height:38px; border-radius:12px; background: linear-gradient(135deg, #0057B8, #00A3E0);}
-    h1{margin:0; font-size:18px;}
-    .sub{color:#5b667a; font-size:12px; margin:2px 0 12px;}
-    .box{border:1px solid #e3e8f2; border-radius:14px; padding:12px; margin:10px 0;}
-    table{width:100%; border-collapse:collapse; margin-top:8px;}
-    th, td{border-bottom:1px solid #e3e8f2; padding:8px; font-size:12px; text-align:left;}
-    th{color:#5b667a; text-transform:uppercase; letter-spacing:.6px;}
-    .badge{display:inline-block; padding:4px 10px; border-radius:999px; background:#f1f5ff; border:1px solid #dbe6ff; font-weight:900; font-family: ui-monospace, Menlo, Consolas, monospace;}
-    ul{margin:6px 0 0; padding-left:18px;}
-    li{margin:6px 0; font-size:12px;}
-    .muted{color:#5b667a; font-size:12px;}
+    @page { size: A4; margin: 14mm; }
+    *{box-sizing:border-box;}
+    body{ font-family: Arial, "Segoe UI", system-ui, sans-serif; color:#001C4A; font-size:12px; line-height:1.5; margin:0; }
+    .mono{font-family: ui-monospace, Menlo, Consolas, "Courier New", monospace;}
+    .b{font-weight:900;}
+    h1{margin:0; font-size:19px; color:#001C4A;}
+    h2{font-size:14px; margin:0 0 8px; color:#1C59B5; border-bottom:2px solid #A8D5FF; padding-bottom:5px;}
+    .sub{color:#5b667a; font-size:11px; margin:3px 0 0;}
+    .head{display:flex; gap:12px; align-items:center; padding-bottom:12px; border-bottom:3px solid #1C59B5; margin-bottom:14px;}
+    .logo{width:42px; height:42px; border-radius:12px; background:linear-gradient(135deg,#001C4A,#1C59B5,#5DA6FF); flex:none;}
+    .sec{margin:0 0 16px; page-break-inside:avoid;}
+    .box{border:1px solid #e0dcd6; border-left:4px solid #1C59B5; border-radius:10px; padding:11px 13px; margin:8px 0; background:#fbfaf9;}
+    .box.warn{border-left-color:#FC522D;}
+    .box.ok{border-left-color:#006B76;}
+    .box.plan{border-left-color:#D5862C;}
+    table{width:100%; border-collapse:collapse; margin-top:6px;}
+    th,td{border-bottom:1px solid #e0dcd6; padding:7px 8px; font-size:11px; text-align:left; vertical-align:top;}
+    th{color:#fff; background:#1C59B5; text-transform:uppercase; letter-spacing:.5px; font-size:10px;}
+    tr:nth-child(even) td{background:#F1ECE9;}
+    ul{margin:5px 0 0; padding-left:18px;}
+    li{margin:4px 0;}
+    .badge{display:inline-block; padding:4px 12px; border-radius:999px; background:#001C4A; color:#fff; font-weight:900; font-family: ui-monospace,Consolas,monospace;}
+    .tier{display:inline-block; padding:3px 10px; border-radius:999px; background:#A8D5FF; color:#001C4A; font-weight:900; font-size:11px;}
+    .anchor{background:#001C4A; color:#fff; border-radius:10px; padding:10px 14px; font-size:14px; font-weight:900; text-align:center; margin:8px 0; letter-spacing:.3px;}
+    .muted{color:#5b667a; font-size:10px;}
+    .two{display:flex; gap:10px;} .two>div{flex:1;}
+    .lead-big{font-size:16px; font-weight:900; margin:6px 0;}
+    .footer{margin-top:14px; padding-top:10px; border-top:1px solid #e0dcd6; color:#5b667a; font-size:10px;}
+    @media print{ .box,.sec,table{page-break-inside:avoid;} }
   </style>
 </head>
 <body>
   <div class="head">
     <div class="logo"></div>
     <div>
-      <h1>DISC — результат теста</h1>
-      <div class="sub">Медицинские представители • Баланс = Чаще − Реже • сформировано локально (не отправляется в интернет)</div>
+      <h1>DISC — профиль медицинского представителя</h1>
+      <div class="sub">Sandoz • практический отчёт для работы с врачами и фармацевтами • сформировано локально</div>
     </div>
   </div>
 
-  <div class="box">
-    <div class="muted">Основной стиль</div>
-    <div style="font-size:16px; font-weight:900; margin:4px 0;">
-      <span class="badge">${r.lead}</span> &nbsp; ${escapeHtml(STYLE_FULL[r.lead])}
+  <div class="sec">
+    <h2>1. Твой профиль</h2>
+    <div class="box">
+      <div class="lead-big"><span class="badge">${lead}</span> &nbsp; ${escapeHtml(STYLE_FULL[lead])}</div>
+      <div>Выраженность: <span class="tier">${intens.tier}</span> — ${escapeHtml(intens.text)}</div>
+      <div style="margin-top:6px;">${diffText}</div>
+      ${comboText ? `<div style="margin-top:6px;"><b>Комбинация ${lead}${second}:</b> ${escapeHtml(comboText)}</div>` : ''}
     </div>
-    <div class="muted">${escapeHtml(diffText)}</div>
-  </div>
-
-  <div class="box">
-    <div style="font-weight:900; font-size:13px; margin-bottom:6px;">Счёт по шкалам</div>
+    <div class="anchor">Якорь стиля: «${escapeHtml(ANCHOR[lead])}»</div>
     <table>
-      <thead><tr><th style="width:50px;">Шкала</th><th>Чаще</th><th>Реже</th><th>Баланс</th></tr></thead>
-      <tbody>${rows}</tbody>
+      <thead><tr><th style="width:40px">Шкала</th><th>Название</th><th style="width:50px">Чаще</th><th style="width:50px">Реже</th><th style="width:60px">Баланс</th></tr></thead>
+      <tbody>${scaleRows}</tbody>
+    </table>
+    <div class="muted" style="margin-top:5px;">Баланс = Чаще − Реже. Чем выше — тем сильнее выражена шкала.</div>
+  </div>
+
+  <div class="sec">
+    <h2>2. Сильные стороны</h2>
+    <div class="box ok"><ul>${li(STRENGTHS[lead])}</ul></div>
+  </div>
+
+  <div class="sec">
+    <h2>3. Слепые зоны</h2>
+    <div class="box warn">
+      <div><b>Оборотная сторона ведущего стиля (${lead}):</b> ${escapeHtml(BLINDLEAD[lead])}</div>
+      <div style="margin-top:8px;"><b>Реальный провал — низкая шкала (${lowStyle}):</b> ${escapeHtml(BLINDLOW[lowStyle])}</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>4. Ты под стрессом</h2>
+    <div class="box warn">
+      <div class="muted" style="margin-bottom:5px;">Триггеры: мало времени, отказ/возражение, очередь, план горит.</div>
+      ${escapeHtml(STRESS[lead])}
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>5. Работа с ВРАЧОМ по твоему стилю</h2>
+    <div class="box"><ul>${li(WITHDOCTOR[lead])}</ul></div>
+  </div>
+
+  <div class="sec">
+    <h2>6. Кто перед тобой за 10 секунд</h2>
+    <table>
+      <thead><tr><th style="width:40px">Стиль</th><th>Как узнать</th><th>Что дать</th></tr></thead>
+      <tbody>${recognizeRows}</tbody>
     </table>
   </div>
 
-  <div class="box">
-    <div style="font-weight:900; font-size:13px; margin-bottom:6px;">Рекомендации для визита</div>
-    ${
-      tips
-      ? `<div style="font-weight:900; margin-bottom:6px;">${escapeHtml(tips.title)}</div><ul>${bullets}</ul>`
-      : `<div class="muted">Нет данных для рекомендаций.</div>`
-    }
+  <div class="sec">
+    <h2>7. Работа с ФАРМАЦЕВТОМ / первостольником</h2>
+    <div class="box">
+      ${escapeHtml(WITHPHARM[lead])}
+      <div style="margin-top:8px;" class="muted">Общее правило аптеки: не клинический разговор, а готовая формула рекомендации + причина рекомендовать именно сейчас (наличие, спрос, доверие).</div>
+    </div>
   </div>
 
-  <div class="muted">
-    Примечание: это короткая самооценка для развития коммуникации. Не является клинической диагностикой и не предназначена для решений о найме.
+  <div class="sec">
+    <h2>8. План развития на 30 дней</h2>
+    <div class="box plan">
+      <div class="muted" style="margin-bottom:5px;">Фокус — закрыть слепую зону ведущего стиля. Отмечай результат в блокноте после визита.</div>
+      <ul>${li(PLAN30[lead])}</ul>
+    </div>
+  </div>
+
+  <div class="footer">
+    Короткая самооценка для развития коммуникации. Не является клинической или психологической диагностикой и не предназначена для решений о найме. © Sandoz — внутреннее обучение.
   </div>
 </body>
-</html>
-    `;
+</html>`;
 
     const w = window.open('', '_blank');
     if (!w){ toast('Браузер заблокировал окно. Разреши pop-up для этого сайта.'); return; }
@@ -596,12 +794,15 @@
     w.document.write(html);
     w.document.close();
     w.focus();
-    setTimeout(()=>{ w.print(); }, 250);
+    setTimeout(()=>{ w.print(); }, 300);
   }
 
   btnCalc.addEventListener('click', calcAndShow);
   btnReset.addEventListener('click', resetAll);
   btnDownload.addEventListener('click', downloadResultPDF);
+  btnCalcFb.addEventListener('click', calcAndShow);
+  btnResetFb.addEventListener('click', resetAll);
+  btnDownloadFb.addEventListener('click', downloadResultPDF);
 
   build();
 </script>
